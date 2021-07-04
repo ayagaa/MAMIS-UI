@@ -1,25 +1,19 @@
 import React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
-// import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-// import FormControlLabel from "@material-ui/core/FormControlLabel";
-// import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-// import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
+import {authenticateUser} from "../../store/epic/userAuthEpic";
+
 import "../../styles/FormStyles.css";
-
-// import "./styles/CDFImage.css";
-
-// import { loginUser } from "../store/epic/applicationEpic";
 
 const initialFormData = Object.freeze({
   userEmail: "",
@@ -31,7 +25,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
-        mis.co.ke
+        mamis.co.ke
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -81,23 +75,28 @@ function LoginForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(formData);
-    // ... submit to API
-    // const [apiCall, apiDispatch] = window.store.application;
-    // loginUser(formData.userEmail, formData.userPassword, apiDispatch)
-    // .then((result) => {
-    //   const [application] = window.store.application;
+    const [authUser, authDispatch] = window.store.authUser;
+    const loginDetails = {
+      userNo: '',
+      userId: formData.userEmail,
+      password: formData.userPassword,
+      userType: 0,
+      errorMessage: ''
+    }
+    authenticateUser(loginDetails, authDispatch)
+    .then((response) => {
+      const [authUser] = window.store.authUser;
+      if(authUser.authUser && authUser.authUser.user && authUser.authUser.user.userType){
+        console.log(authUser.authUser.user.userType);
+        if(authUser.authUser.user.userType === 1){
+          history.push("/farmer-view");
+        }else if(authUser.authUser.user.userType === 2){
+          history.push("/buyer-view");
+        }
+      }else{
 
-    //   if(application.authUser && application.authUser.isAuthenticated){
-    //     // console.log(application.authUser);
-
-    //     history.push("/application-form");
-    //   }else if(application.authUser && !application.authUser.isAuthenticated){
-    //     alert(application.authUser.userToken);
-    //   }else{
-    //     alert("Oops! Something went wrong. Please try again.");
-    //   }
-    // });
+      }
+    });
   };
 
   const register = (e) => {
@@ -134,7 +133,7 @@ function LoginForm(props) {
       <div className={classes.paper}>
         {/* <div className="cdf-image"></div> */}
         <Typography component="h1" variant="h7">
-          Market Information System
+          Machakos Agricultural Market Information System
         </Typography>
         <div className="login-container">
           <Typography component="h1" variant="h5">

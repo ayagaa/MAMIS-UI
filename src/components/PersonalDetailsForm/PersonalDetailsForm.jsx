@@ -21,7 +21,7 @@ import {
 
 export default class PersonalDetailsForm extends Component {
   render() {
-    const { applicationValues, stepLabel } = this.props;
+    const {stepLabel, values, handleChange } = this.props;
     const genderItems = ["Female", "Male", "Transgender"];
     return (
       <React.Fragment>
@@ -33,38 +33,38 @@ export default class PersonalDetailsForm extends Component {
           <br />
           <form>
             <TextField
-              //disabled={values.submitted}
+              disabled={values.submitted}
               label="National ID"
               type="number"
-              //onChange={(event) => handleChange("grade", event)}
-              //defaultValue={values.grade}
+              onChange={(event) => handleChange("nationalId", event)}
+              defaultValue={values.nationalId}
               variant="outlined"
             />
             <br />
             <br />
             <TextField
-              //disabled={values.submitted}
+              disabled={values.submitted}
               label="First Name"
-              //onChange={(event) => handleChange("grade", event)}
-              //defaultValue={values.grade}
+              onChange={(event) => handleChange("firstName", event)}
+              defaultValue={values.firstName}
               variant="outlined"
             />
             <br />
             <br />
             <TextField
-              //disabled={values.submitted}
+              disabled={values.submitted}
               label="Given Name"
-              //onChange={(event) => handleChange("grade", event)}
-              //defaultValue={values.grade}
+              onChange={(event) => handleChange("givenName", event)}
+              defaultValue={values.givenName}
               variant="outlined"
             />
             <br />
             <br />
             <TextField
-              //disabled={values.submitted}
+              disabled={values.submitted}
               label="Other Name"
-              //onChange={(event) => handleChange("grade", event)}
-              //defaultValue={values.grade}
+              onChange={(event) => handleChange("otherName", event)}
+              defaultValue={values.otherName}
               variant="outlined"
             />
             <br />
@@ -74,16 +74,15 @@ export default class PersonalDetailsForm extends Component {
                 Gender
               </InputLabel>
               <Select
-                //disabled={values.submitted}
+                disabled={values.submitted}
                 autoFocus={false}
                 label="Gender"
-                //value={values.levelOfStudy}
-                //onChange={(event) => handleChange("levelOfStudy", event)}
+                value={values.gender}
+                onChange={(event) => handleChange("gender", event)}
                 inputProps={{
-                  name: "levelOfStudy",
+                  name: "gender",
                   id: "outlined-age-native-simple",
                 }}
-                // onChange={(event) => console.log(event)}
               >
                 <option value={"Female"}>Female</option>
                 <option value={"Male"}>Male</option>
@@ -97,19 +96,18 @@ export default class PersonalDetailsForm extends Component {
                 User Type
               </InputLabel>
               <Select
-                //disabled={values.submitted}
+                disabled={values.submitted}
                 autoFocus={false}
                 label="User Type"
-                //value={values.levelOfStudy}
-                //onChange={(event) => handleChange("levelOfStudy", event)}
+                value={values.userType}
+                onChange={(event) => handleChange("userType", event)}
                 inputProps={{
-                  name: "levelOfStudy",
+                  name: "userType",
                   id: "outlined-age-native-simple",
                 }}
-                // onChange={(event) => console.log(event)}
               >
                 <option value={1}>Farmer</option>
-                <option value={2}>Buyer</option>
+                <option value={2}>Trader</option>
               </Select>
             </FormControl>
           </form>

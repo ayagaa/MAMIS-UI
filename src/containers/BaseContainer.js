@@ -1,9 +1,9 @@
 import React from 'react';
-//import store from '../store/store';
+import store from "../store/store";
 import App from '../App';
 
 export default function BaseContainer() {
-    //window.store = store();
+    window.store = store();
     return (
         <App/>
     );

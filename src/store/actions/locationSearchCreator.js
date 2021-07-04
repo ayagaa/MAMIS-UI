@@ -1,8 +1,8 @@
 export const LOCATIONS_RECEIVED = 'LOCATIONS_RECEIVED';
 export const LOCATION_RESULTS_RECEIVED = 'LOCATION_RESULTS_RECEIVED';
 export const LOCATION_DATA_RECEIVED = 'LOCATION_DATA_RECEIVED';
-export const GET_ADMINISTRATION_DATA = 'GET_ADMINISTRATION_DATA';
 export const RESET_LOCATION = 'RESET_LOCATION';
+export const MAP_03_RECEIVED = 'MAP_RECEIVED';
 
 export function locationsReceived(locations) {
     return {
@@ -25,16 +25,18 @@ export function locationDataReceived(locationData) {
     };
 }
 
-export function adminsReceived(admins) {
-    return {
-        type: GET_ADMINISTRATION_DATA,
-        admins
-    };
-}
+
 
 export function locationsReset() {
     return {
         type: RESET_LOCATION,
         locations: ''
+    }
+}
+
+export function map03Received(map03GeoJson) {
+    return{
+        type: MAP_03_RECEIVED,
+        map03GeoJson
     }
 }
