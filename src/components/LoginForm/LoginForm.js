@@ -87,7 +87,7 @@ function LoginForm(props) {
     .then((response) => {
       const [authUser] = window.store.authUser;
       if(authUser.authUser && authUser.authUser.user && authUser.authUser.user.userType){
-        console.log(authUser.authUser.user.userType);
+
         if(authUser.authUser.user.userType === 1){
           history.push("/farmer-view");
         }else if(authUser.authUser.user.userType === 2){
@@ -146,7 +146,7 @@ function LoginForm(props) {
               required
               fullWidth
               id="userEmail"
-              label="Email Address"
+              label="User ID"
               name="userEmail"
               autoComplete="email"
               autoFocus

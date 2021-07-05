@@ -49,6 +49,7 @@ export default class AppMap extends Component {
 
   componentDidMount() {
     const map = this.mapRef.leafletElement;
+    //const
   }
 
   getCoordinates(event) {
@@ -128,20 +129,23 @@ export default class AppMap extends Component {
         this.guidPart() +
         this.guidPart()
       ).toLowerCase();
-      //const obj = resultDetails;
 
       if (data && data.features.length > 0) {
         const map = this.mapRef?.leafletElement;
-        //const data = JSON.parse(obj);
+
         const bbox = require("geojson-bbox");
         if (data.features) {
           if (data.features) {
             const bounds = bbox(data.features);
-            const corner1 = [bounds[(0, 0)], bounds[(0, 1)]];
-            const corner2 = [bounds[(0, 2)], bounds[(0, 3)]];
-            const resultBounds = [corner1, corner2];
-            geojsonBounds = resultBounds;
-            pointZoom = map?.getBoundsZoom(resultBounds, false);
+            try {
+              const corner1 = [bounds[(0, 0)], bounds[(0, 1)]];
+              const corner2 = [bounds[(0, 2)], bounds[(0, 3)]];
+              const resultBounds = [corner1, corner2];
+              geojsonBounds = resultBounds;
+              pointZoom = map?.getBoundsZoom(resultBounds, false);
+            } catch (error) {
+              
+            }
           }
 
           return (
@@ -291,7 +295,7 @@ export default class AppMap extends Component {
             <TileLayer
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a> Powered by GeoWAIS'
               //url="http://172.17.216.137/styles/osm-bright/{z}/{x}/{y}.png"
-              url="http://192.168.129.74/styles/osm-bright/{z}/{x}/{y}.png"
+              url="http://138.68.144.98:3031/styles/osm-bright/{z}/{x}/{y}.png"
             />
             <Marker position={centerPosition}></Marker>
             {/* {stakeholdersRender} */}
@@ -326,7 +330,7 @@ export default class AppMap extends Component {
           <ZoomControl position="bottomright" />
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a> Powered by GeoWAIS'
-            url="http://172.17.216.137/styles/osm-bright/{z}/{x}/{y}.png"
+            url="http://138.68.144.98:3031/styles/osm-bright/{z}/{x}/{y}.png"
           />
           <Marker position={centerPosition}></Marker>
         </LeafletMap>
