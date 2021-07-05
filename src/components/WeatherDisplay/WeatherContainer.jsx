@@ -143,7 +143,6 @@ export default class WeatherContainer extends Component {
     const { showDaily } = this.state;
 
     geoWeatherData = showDaily ? forecastData : currentData.forecasts;
-    console.log(geoWeatherData[currentIndex].forecast[0]);
     let timeFormat = showDaily ? "dddd Do MMM" : "HH:mm";
     let conditionsArray = this.getConditionsText(showDaily, geoWeatherData[currentIndex].forecast[0]);
     if (geoWeatherData && geoWeatherData.length > 0) {
@@ -169,7 +168,7 @@ export default class WeatherContainer extends Component {
             </div>
           </div>
           <div className="time-type">
-            <div
+            {/* <div
               className="time-daily selected-time"
               onClick={(e) => this.displayDaily(e, currentData, true)}
             >
@@ -180,7 +179,7 @@ export default class WeatherContainer extends Component {
               onClick={(e) => this.displayHourly(e, forecastData, false)}
             >
               <h4>Hourly</h4>
-            </div>
+            </div> */}
           </div>
           <div className="datetime-title">
             <h3>

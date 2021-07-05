@@ -107,7 +107,7 @@ export default class FarmerView extends Component {
           )?.bvName;
           valueChain = valueChains?.find(
             (v) => v.valueChainId === valueChainId
-          ).valueChain;
+          )?.valueChain;
           lat = valueChains[j]?.breedVarieties?.find(
             (bv) => bv.bvId == farmer.farmerBvs[i].bvId
           )?.latitude;
