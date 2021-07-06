@@ -17,7 +17,7 @@ import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SearchIcon from "@material-ui/icons/Search";
-import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 
 import AppMap from "../Map/AppMap";
 import WeatherContainer from "../WeatherDisplay/WeatherContainer";
@@ -25,12 +25,11 @@ import MarketInformation from "../MarketInformation/MarketInformation";
 
 import { authenticateUser } from "../../store/epic/userAuthEpic";
 import { getAdmins } from "../../store/epic/adminsEpic";
+import { getWeatherData } from "../../store/epic/locationSearchEpic";
 
 import "./FarmerView.css";
 
-let weatherDetails = (
-  <div></div>
-);
+let weatherDetails = <div></div>;
 let bVs = [];
 
 let bVsCorrection = [];
@@ -49,20 +48,20 @@ export default class FarmerView extends Component {
       valueChains: null,
       isInitiated: false,
       rerenderMap: true,
-      admins: null
+      admins: null,
     };
   }
 
   componentDidMount() {
     const { isInitiated, mapData } = this.state;
 
-    const [admins, adminsDispatch] = window.store.admins
+    const [admins, adminsDispatch] = window.store.admins;
     getAdmins(adminsDispatch).then((result) => {
       const [admins, adminsDispatch] = window.store.admins;
       let administrationList = admins;
       this.setState({
-        admins: administrationList.admins
-      })
+        admins: administrationList.admins,
+      });
     });
 
     if (window.store.authUser[0].authUser && !isInitiated) {
@@ -80,12 +79,38 @@ export default class FarmerView extends Component {
     }
   }
 
-  getWeatherData(event, rowIndex){
+  getPoint = (lat, lon) => {
+    const [locationData, locationDataDispatch] = window.store.search;
+    const latitude = lat;
+    const longitude = lon;
+    getWeatherData(latitude, longitude, locationDataDispatch).then(
+      (result) => {
+        const [locationData, locationDataDispatch] = window.store.search;
+        if (locationData) {
+          this.setState({
+            searchResult : locationData.weatherData,
+          });
+        }
+      }
+    );
+  };
 
-    if(bVsCorrection && bVsCorrection.length > 0 && bVsCorrection[rowIndex]){
-      
+  getWeatherData(event, rowIndex) {
+    if (bVsCorrection && bVsCorrection.length > 0 && bVsCorrection[rowIndex]) {
+      const [locationData, locationDataDispatch] = window.store.search;
+      const latitude = bVsCorrection[rowIndex].lat;
+      const longitude = bVsCorrection[rowIndex].lon;
+      getWeatherData(latitude, longitude, locationDataDispatch).then(
+        (result) => {
+          const [locationData, locationDataDispatch] = window.store.search;
+          if (locationData) {
+            this.setState({
+              searchResult: locationData.weatherData,
+            });
+          }
+        }
+      );
     }
-
   }
 
   renderWeatherData(currentData, forecastData, locationData) {
@@ -101,10 +126,9 @@ export default class FarmerView extends Component {
   }
 
   loadDataFarmerGrid = (farmer, valueChains) => {
-    const { isInitiated} = this.state;
+    const { isInitiated } = this.state;
 
     if (farmer?.farmerBvs?.length > 0) {
-
       let valueChainId = 0;
       let valueChain = "";
       let bvId = 0;
@@ -113,8 +137,7 @@ export default class FarmerView extends Component {
       let lon = 0;
       let ward = "";
       let rowIndex = 1;
-      bVs=[];
-
+      bVs = [];
 
       for (let i = 0; i < farmer.farmerBvs.length; i++) {
         rowIndex++;
@@ -129,7 +152,7 @@ export default class FarmerView extends Component {
           lat = farmer.farmerBvs[i]?.latitude;
           lon = farmer.farmerBvs[i]?.longitude;
 
-          if(bvId && bvId !== 0){
+          if (bvId && bvId !== 0) {
             valueChainId = valueChains[j]?.breedVarieties?.find(
               (bv) => bv.bvId === bvId
             )?.valueChainId;
@@ -152,20 +175,20 @@ export default class FarmerView extends Component {
         }
       }
 
-      if(bVs && bVs.length > 0){
+      if (bVs && bVs.length > 0) {
         bVsCorrection = [];
-        for(let i = 0; i < bVs.length; i++){
-          if(bVs[i].bvName && bVs[i].bvName.length > 0){
-             bVsCorrectionIndex++;
-             bVsCorrection.push({
-               valueChainId: bVs[i].valueChainId,
-               valueChain: bVs[i].valueChain,
-               bvId: bVs[i].bvId,
-               bvName: bVs[i].bvName,
-               lat: bVs[i].lat,
-               lon: bVs[i].lon,
-               rowIndex: bVs[i].rowIndex
-             });
+        for (let i = 0; i < bVs.length; i++) {
+          if (bVs[i].bvName && bVs[i].bvName.length > 0) {
+            bVsCorrectionIndex++;
+            bVsCorrection.push({
+              valueChainId: bVs[i].valueChainId,
+              valueChain: bVs[i].valueChain,
+              bvId: bVs[i].bvId,
+              bvName: bVs[i].bvName,
+              lat: bVs[i].lat,
+              lon: bVs[i].lon,
+              rowIndex: bVs[i].rowIndex,
+            });
           }
         }
       }
@@ -190,9 +213,7 @@ export default class FarmerView extends Component {
                       <IconButton
                         aria-label="delete"
                         color="secondary"
-                        onClick={(event) =>
-                          this.getWeatherData(event, index)
-                        }
+                        onClick={(event) => this.getWeatherData(event, index)}
                       >
                         <SearchIcon />
                       </IconButton>
@@ -254,19 +275,19 @@ export default class FarmerView extends Component {
       marketPrices,
       valueChains,
       searchResult,
-      admins
+      admins,
     } = this.state;
 
     const locationData = {
       location: searchResult?.region5,
       region1: searchResult?.region1,
-      region3: searchResult?.region3
-    }
+      region3: searchResult?.region3,
+    };
     const renderFarmerGrid = this.loadDataFarmerGrid(farmerData, valueChains);
     if (searchResult?.currentData && searchResult?.forecasts) {
       weatherDetails = this.renderWeatherData(
         searchResult.currentData,
-        searchResult.forecasts?.forecasts  ,
+        searchResult.forecasts?.forecasts,
         locationData
       );
     }
@@ -276,7 +297,11 @@ export default class FarmerView extends Component {
           <div className="weather-info-container">
             <div className="farm-data">{renderFarmerGrid}</div>
             <div className="map-container">
-              <AppMap resultDetails={mapData} renderAdminMap={rerenderMap} />
+              <AppMap
+                parentFunction={this.getPoint}
+                resultDetails={mapData}
+                renderAdminMap={rerenderMap}
+              />
             </div>
             <div className="weather-data">{weatherDetails}</div>
           </div>
@@ -285,10 +310,10 @@ export default class FarmerView extends Component {
         return (
           <div className="market-info-container">
             <MarketInformation
-            marketPrices={marketPrices}
-            markets={markets}
-            valueChains={valueChains}
-            admins={admins}
+              marketPrices={marketPrices}
+              markets={markets}
+              valueChains={valueChains}
+              admins={admins}
             />
           </div>
         );
@@ -316,7 +341,7 @@ export default class FarmerView extends Component {
   logout = () => {
     localStorage.clear();
     this.props.history.push("/");
-  }
+  };
 
   render() {
     const { value, marketPrices, user } = this.state;
@@ -346,11 +371,18 @@ export default class FarmerView extends Component {
             </Tabs>
           </Paper>
           <div className="logout-button">
-          <IconButton color="primary" aria-label="Logout" size="large" onClick={this.logout}>
-            <PowerSettingsNewIcon/>
-          </IconButton>
-          <a href=""onClick={this.logout}>Logout</a>
-        </div>
+            <IconButton
+              color="primary"
+              aria-label="Logout"
+              size="large"
+              onClick={this.logout}
+            >
+              <PowerSettingsNewIcon />
+            </IconButton>
+            <a href="" onClick={this.logout}>
+              Logout
+            </a>
+          </div>
         </AppBar>
         {currentTab}
       </div>

@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 
-import { LOCATIONS_RECEIVED, LOCATION_RESULTS_RECEIVED, LOCATION_DATA_RECEIVED, RESET_LOCATION, MAP_03_RECEIVED } from "../actions/locationSearchCreator";
+import { LOCATIONS_RECEIVED, LOCATION_RESULTS_RECEIVED, LOCATION_DATA_RECEIVED, RESET_LOCATION, MAP_03_RECEIVED, WEATHER_DATA_RECEIVED } from "../actions/locationSearchCreator";
 
 import { updateObject } from "../../utils/stateUpdater";
 
@@ -10,6 +10,7 @@ const initialState = {
     locationData: '',
     resetData: '',
     map03GeoJson: '',
+    weatherData: '',
 }
 
 export function reducer(state = initialState, action) {
@@ -58,17 +59,24 @@ export function reducer(state = initialState, action) {
                 resetData: action.resetData,
                 map03GeoJson: action.map03GeoJson
             }
-            case MAP_03_RECEIVED:
-                updateObject(state, {
-                    map03GeoJson: action.map03GeoJson
-                });
-                return {
-                    locations: action.locations,
-                    locationResults: action.locationResults,
-                    locationData: action.locationData,
-                    resetData: action.resetData,
-                    map03GeoJson: action.map03GeoJson
-                }
+        case MAP_03_RECEIVED:
+            updateObject(state, {
+                map03GeoJson: action.map03GeoJson
+            });
+            return {
+                locations: action.locations,
+                locationResults: action.locationResults,
+                locationData: action.locationData,
+                resetData: action.resetData,
+                map03GeoJson: action.map03GeoJson
+            }
+        case WEATHER_DATA_RECEIVED:
+            updateObject(state, {
+                weatherData: action
+            });
+            return {
+                weatherData: action.weatherData
+            }
         default:
             return state;
     }
