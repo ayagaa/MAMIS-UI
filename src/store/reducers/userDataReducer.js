@@ -1,12 +1,13 @@
 import { useReducer } from 'react';
 
-import { ADD_FARMER, ADD_BUYER } from "../actions/userDataCreator";
+import { ADD_FARMER, ADD_BUYER, FARMERS_FETCHED } from "../actions/userDataCreator";
 
 import { updateObject } from "../../utils/stateUpdater";
 
 const initialState = {
     farmerData: '',
     buyerData: '',
+    farmersData: ''
 }
 
 export function reducer(state = initialState, action) {
@@ -19,13 +20,19 @@ export function reducer(state = initialState, action) {
                 farmerData: action.farmer
             };
         case ADD_BUYER:
-            console.log(action);
             updateObject(state, {
                 buyerData: action.buyer
             });
             return {
                 buyerData: action.buyer
             };
+            case FARMERS_FETCHED:
+                updateObject(state, {
+                    farmersData: action.farmers
+                });
+                return {
+                    farmersData: action.farmers
+                };
         default:
             return state;
     }

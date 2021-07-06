@@ -1,6 +1,6 @@
 import * as userDataService from "../../services/userDataService";
 
-import {farmerAdded, buyerAdded} from "../actions/userDataCreator";
+import {farmerAdded, buyerAdded, farmersFetched} from "../actions/userDataCreator";
 
 export function addFarmer(farmerData, dispatch){
     return userDataService.addFarmer(farmerData)
@@ -10,4 +10,8 @@ export function addFarmer(farmerData, dispatch){
 export function addBuyer(buyerData, dispatch){
     return userDataService.addBuyer(buyerData)
     .then(response => {dispatch(buyerAdded(response))});
+}
+
+export function fetchFarmers(dispatch){
+    return userDataService.getFarmers().then(response => { dispatch(farmersFetched(response)) });
 }

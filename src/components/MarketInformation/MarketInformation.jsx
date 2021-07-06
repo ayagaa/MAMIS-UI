@@ -62,7 +62,7 @@ export default class MarketInformation extends Component {
               marketName,
               valueChain,
               bvName,
-              retailPrice :marketPrices[i].retialPrice,
+              retailPrice :marketPrices[i].retailPrice,
               retailPackage: marketPrices[i].retailPackage,
               wholesalePrice: marketPrices[i].wholesalePrice,
               wholesalePackage: marketPrices[i].wholesalePackage,

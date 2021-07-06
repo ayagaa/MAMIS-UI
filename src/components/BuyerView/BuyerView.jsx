@@ -7,6 +7,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
+import IconButton from '@material-ui/core/IconButton';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -17,6 +20,7 @@ import TableRow from "@material-ui/core/TableRow";
 import MarketInformation from "../MarketInformation/MarketInformation";
 
 import { getAdmins } from "../../store/epic/adminsEpic";
+import { fetchFarmers } from "../../store/epic/userDataEpic";
 
 import "./BuyerView.css";
 
@@ -31,12 +35,19 @@ export default class BuyerView extends Component {
       marketPrices: null,
       valueChains: null,
       isInitiated: false,
-      admins: null
+      admins: null,
+      farmersData: null
     };
   }
 
   componentDidMount() {
     const { isInitiated} = this.state;
+
+    const [userData, userDataDispatch] = window.store.userData;
+    fetchFarmers().then((result) => {
+      const [userData, userDataDispatch] = window.store.userData;
+      console.log(userData);
+    });
 
     const [admins, adminsDispatch] = window.store.admins
     getAdmins(adminsDispatch).then((result) => {
@@ -111,6 +122,11 @@ export default class BuyerView extends Component {
     }
   };
 
+  logout = () => {
+    localStorage.clear();
+    this.props.history.push("/");
+  }
+
   render() {
     const { value} = this.state;
     const currentTab = this.renderTabContent(value);
@@ -133,6 +149,12 @@ export default class BuyerView extends Component {
             <Tab id={1} label="Farmer Listing" />
           </Tabs>
         </Paper>
+        <div className="logout-button">
+          <IconButton color="primary" aria-label="Logout" size="large" onClick={this.logout}>
+            <PowerSettingsNewIcon/>
+          </IconButton>
+          <a href=""onClick={this.logout}>Logout</a>
+        </div>
       </AppBar>
       {currentTab}
       </div>

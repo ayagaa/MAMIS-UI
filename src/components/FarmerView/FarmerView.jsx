@@ -17,6 +17,7 @@ import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SearchIcon from "@material-ui/icons/Search";
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
 import AppMap from "../Map/AppMap";
 import WeatherContainer from "../WeatherDisplay/WeatherContainer";
@@ -312,6 +313,11 @@ export default class FarmerView extends Component {
     }
   }
 
+  logout = () => {
+    localStorage.clear();
+    this.props.history.push("/");
+  }
+
   render() {
     const { value, marketPrices, user } = this.state;
     const currentTab = this.renderTabContent(value);
@@ -339,6 +345,12 @@ export default class FarmerView extends Component {
               <Tab id={3} label="Crop Insurance" />
             </Tabs>
           </Paper>
+          <div className="logout-button">
+          <IconButton color="primary" aria-label="Logout" size="large" onClick={this.logout}>
+            <PowerSettingsNewIcon/>
+          </IconButton>
+          <a href=""onClick={this.logout}>Logout</a>
+        </div>
         </AppBar>
         {currentTab}
       </div>
