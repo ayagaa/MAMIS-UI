@@ -1,11 +1,11 @@
 import { get, post } from "./apiService";
 
 
-const SEARCH_URL = 'http://mamis.co.ke/api/search';
+const SEARCH_URL = 'http://138.68.144.98/api/search';
 
-const MAP_03_URL = 'http://mamis.co.ke/api/maps/admin03';
+const MAP_03_URL = 'http://138.68.144.98/api/maps/admin03';
 
-const WEATHER_DATA_URL = "http://mamis.co.ke/api/maps/weatherdata"
+const WEATHER_DATA_URL = "http://138.68.144.98/api/maps/weatherdata"
 
 //const MAP_URL = 'http://localhost:5000/api/maps/admin03?admin01id=34&admin02id=185&admin03name=oloosirkon/sholinke'
 

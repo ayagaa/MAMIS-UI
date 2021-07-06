@@ -330,7 +330,7 @@ export default class AppMap extends Component {
           <ZoomControl position="bottomright" />
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a> Powered by GeoWAIS'
-            url="http://mamis.co.ke:3031/styles/osm-bright/{z}/{x}/{y}.png"
+            url="http://138.68.144.98:3031/styles/osm-bright/{z}/{x}/{y}.png"
           />
           <Marker position={centerPosition}></Marker>
         </LeafletMap>
