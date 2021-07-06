@@ -20,8 +20,10 @@ import SearchIcon from "@material-ui/icons/Search";
 
 import AppMap from "../Map/AppMap";
 import WeatherContainer from "../WeatherDisplay/WeatherContainer";
+import MarketInformation from "../MarketInformation/MarketInformation";
 
 import { authenticateUser } from "../../store/epic/userAuthEpic";
+import { getAdmins } from "../../store/epic/adminsEpic";
 
 import "./FarmerView.css";
 
@@ -30,11 +32,15 @@ let weatherDetails = (
 );
 let bVs = [];
 
+let bVsCorrection = [];
+let bVsCorrectionIndex = 0;
+
 export default class FarmerView extends Component {
   constructor(props) {
     super(props);
     this.state = {
       value: 0,
+      user: 0,
       farmerData: null,
       mapData: null,
       markets: null,
@@ -42,15 +48,25 @@ export default class FarmerView extends Component {
       valueChains: null,
       isInitiated: false,
       rerenderMap: true,
+      admins: null
     };
   }
 
   componentDidMount() {
     const { isInitiated, mapData } = this.state;
 
-    if (window.store.authUser[0].authUser && !isInitiated) {
-      console.log(window.store.authUser[0].authUser);
+    const [admins, adminsDispatch] = window.store.admins
+    getAdmins(adminsDispatch).then((result) => {
+      const [admins, adminsDispatch] = window.store.admins;
+      let administrationList = admins;
       this.setState({
+        admins: administrationList.admins
+      })
+    });
+
+    if (window.store.authUser[0].authUser && !isInitiated) {
+      this.setState({
+        user: window.store.authUser[0].authUser.user,
         farmerData: window.store.authUser[0].authUser.farmer,
         mapData: window.store.authUser[0].authUser.mapData,
         markets: window.store.authUser[0].authUser.markets,
@@ -61,6 +77,14 @@ export default class FarmerView extends Component {
         isInitiated: true,
       });
     }
+  }
+
+  getWeatherData(event, rowIndex){
+
+    if(bVsCorrection && bVsCorrection.length > 0 && bVsCorrection[rowIndex]){
+      
+    }
+
   }
 
   renderWeatherData(currentData, forecastData, locationData) {
@@ -77,9 +101,9 @@ export default class FarmerView extends Component {
 
   loadDataFarmerGrid = (farmer, valueChains) => {
     const { isInitiated} = this.state;
-    console.log(farmer);
+
     if (farmer?.farmerBvs?.length > 0) {
-      console.log(valueChains);
+
       let valueChainId = 0;
       let valueChain = "";
       let bvId = 0;
@@ -89,9 +113,11 @@ export default class FarmerView extends Component {
       let ward = "";
       let rowIndex = 1;
       bVs=[];
+
+
       for (let i = 0; i < farmer.farmerBvs.length; i++) {
-        valueChainId = 1;
         rowIndex++;
+        valueChainId = 0;
         valueChain = "";
         bvId = 0;
         bvName = "";
@@ -99,35 +125,48 @@ export default class FarmerView extends Component {
         lon = 0;
         for (let j = 0; j < valueChains.length; j++) {
           bvId = farmer.farmerBvs[i]?.bvId;
-          valueChainId = valueChains[j]?.breedVarieties?.find(
-            (bv) => bv.bvId == farmer.farmerBvs[i].bvId
-          )?.valueChainId;
-          bvName = valueChains[j]?.breedVarieties?.find(
-            (bv) => bv.bvId == farmer.farmerBvs[i].bvId
-          )?.bvName;
-          valueChain = valueChains?.find(
-            (v) => v.valueChainId === valueChainId
-          )?.valueChain;
-          lat = valueChains[j]?.breedVarieties?.find(
-            (bv) => bv.bvId == farmer.farmerBvs[i].bvId
-          )?.latitude;
-          lon = valueChains[j]?.breedVarieties?.find(
-            (bv) => bv.bvId == farmer.farmerBvs[i].bvId
-          )?.longitude;
-          break;
+          lat = farmer.farmerBvs[i]?.latitude;
+          lon = farmer.farmerBvs[i]?.longitude;
+
+          if(bvId && bvId !== 0){
+            valueChainId = valueChains[j]?.breedVarieties?.find(
+              (bv) => bv.bvId === bvId
+            )?.valueChainId;
+            bvName = valueChains[j]?.breedVarieties?.find(
+              (bv) => bv.bvId === bvId
+            )?.bvName;
+            valueChain = valueChains?.find(
+              (v) => v.valueChainId === valueChainId
+            )?.valueChain;
+            bVs.push({
+              valueChainId,
+              valueChain,
+              bvId,
+              bvName,
+              lat,
+              lon,
+              rowIndex,
+            });
+          }
         }
+      }
 
-        bVs.push({
-          valueChainId,
-          valueChain,
-          bvId,
-          bvName,
-          lat,
-          lon,
-          rowIndex,
-        });
-
-        console.log(bVs);
+      if(bVs && bVs.length > 0){
+        bVsCorrection = [];
+        for(let i = 0; i < bVs.length; i++){
+          if(bVs[i].bvName && bVs[i].bvName.length > 0){
+             bVsCorrectionIndex++;
+             bVsCorrection.push({
+               valueChainId: bVs[i].valueChainId,
+               valueChain: bVs[i].valueChain,
+               bvId: bVs[i].bvId,
+               bvName: bVs[i].bvName,
+               lat: bVs[i].lat,
+               lon: bVs[i].lon,
+               rowIndex: bVs[i].rowIndex
+             });
+          }
+        }
       }
 
       return (
@@ -141,7 +180,7 @@ export default class FarmerView extends Component {
                 <TableCell width={10}>Search</TableCell>
               </TableHead>
               <TableBody>
-                {bVs?.map((row, index) => (
+                {bVsCorrection?.map((row, index) => (
                   <TableRow key={row.rowIndex}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{row.valueChain}</TableCell>
@@ -151,7 +190,7 @@ export default class FarmerView extends Component {
                         aria-label="delete"
                         color="secondary"
                         onClick={(event) =>
-                          this.handleDelete(event, row.rowIndex)
+                          this.getWeatherData(event, index)
                         }
                       >
                         <SearchIcon />
@@ -213,15 +252,21 @@ export default class FarmerView extends Component {
       markets,
       marketPrices,
       valueChains,
-      searchResult
+      searchResult,
+      admins
     } = this.state;
-    console.log(searchResult);
+
+    const locationData = {
+      location: searchResult?.region5,
+      region1: searchResult?.region1,
+      region3: searchResult?.region3
+    }
     const renderFarmerGrid = this.loadDataFarmerGrid(farmerData, valueChains);
     if (searchResult?.currentData && searchResult?.forecasts) {
       weatherDetails = this.renderWeatherData(
         searchResult.currentData,
         searchResult.forecasts?.forecasts  ,
-        searchResult.location
+        locationData
       );
     }
     switch (value) {
@@ -237,8 +282,13 @@ export default class FarmerView extends Component {
         );
       case 1:
         return (
-          <div>
-            <h1>Two</h1>
+          <div className="market-info-container">
+            <MarketInformation
+            marketPrices={marketPrices}
+            markets={markets}
+            valueChains={valueChains}
+            admins={admins}
+            />
           </div>
         );
       case 2:
@@ -263,8 +313,7 @@ export default class FarmerView extends Component {
   }
 
   render() {
-    const { value, searchResult } = this.state;
-    console.log(searchResult);
+    const { value, marketPrices, user } = this.state;
     const currentTab = this.renderTabContent(value);
     return (
       <div>

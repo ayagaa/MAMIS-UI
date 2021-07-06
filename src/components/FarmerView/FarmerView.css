@@ -27,3 +27,7 @@
     height: 550px;
     grid-area: map-container;
 }
+
+.market-info-container{
+    padding-top: 10px;
+}
