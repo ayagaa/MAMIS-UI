@@ -142,10 +142,10 @@ export default class WeatherContainer extends Component {
     const { currentData, forecastData, locationData } = this.props;
     const { showDaily } = this.state;
 
-    geoWeatherData = showDaily ? forecastData : currentData.forecasts;
+    geoWeatherData = showDaily ? forecastData : currentData?.forecasts;
     let timeFormat = showDaily ? "dddd Do MMM" : "HH:mm";
-    let conditionsArray = this.getConditionsText(showDaily, geoWeatherData[currentIndex].forecast[0]);
-    if (geoWeatherData && geoWeatherData.length > 0) {
+    let conditionsArray = this.getConditionsText(showDaily, geoWeatherData[currentIndex]?.forecast[0]);
+    if (geoWeatherData && geoWeatherData.length > 0 &&  geoWeatherData[currentIndex]?.forecast[0]) {
       return (
         <div className="display-container">
           <div className="location-data">
@@ -153,17 +153,17 @@ export default class WeatherContainer extends Component {
               <p>
                 {" "}
                 {"Location: "}
-                {locationData.location}
+                {locationData?.location}
               </p>
               <p>
                 {" "}
                 {"County: "}
-                {locationData.region1}
+                {locationData?.region1}
               </p>
               <p>
                 {" "}
                 {"Ward: "}
-                {locationData.region3}
+                {locationData?.region3}
               </p>
             </div>
           </div>
@@ -185,12 +185,12 @@ export default class WeatherContainer extends Component {
             <h3>
               {" "}
               {moment(
-                geoWeatherData[currentIndex].forecast[0].startTime
+                geoWeatherData[currentIndex]?.forecast[0]?.startTime
               ).format(timeFormat)}
               {!showDaily
                 ? "-" +
                   moment(
-                    geoWeatherData[currentIndex].forecast[0].endTime
+                    geoWeatherData[currentIndex]?.forecast[0]?.endTime
                   ).format(timeFormat)
                 : ""}{" "}
             </h3>
@@ -206,15 +206,15 @@ export default class WeatherContainer extends Component {
               <p>
                 Precipitation :{" "}
                 {Math.round(
-                  geoWeatherData[currentIndex].forecast[0].precipitation.amount,
+                  geoWeatherData[currentIndex]?.forecast[0]?.precipitation?.amount,
                   0
                 )}{" "}
-                {geoWeatherData[currentIndex].forecast[0].precipitation.units}
+                {geoWeatherData[currentIndex]?.forecast[0]?.precipitation?.units}
               </p>
               <p>
                 Chance :{" "}
                 {Math.round(
-                  geoWeatherData[currentIndex].forecast[0].precipitation.chance,
+                  geoWeatherData[currentIndex]?.forecast[0]?.precipitation?.chance,
                   0
                 )}{" "}
                 %
@@ -222,10 +222,10 @@ export default class WeatherContainer extends Component {
               <p>
                 Max Temp :{" "}
                 {Math.round(
-                  geoWeatherData[currentIndex].forecast[0].temperatures?.max,
+                  geoWeatherData[currentIndex]?.forecast[0]?.temperatures?.max,
                   0
                 )}{" "}
-                °{geoWeatherData[currentIndex].forecast[0].temperatures?.units}
+                °{geoWeatherData[currentIndex]?.forecast[0]?.temperatures?.units}
               </p>
               <p>
                 Min Temp :{" "}
