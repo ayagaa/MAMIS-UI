@@ -332,8 +332,14 @@
   .advisory-details {
     height: 100px;
   }
+
+  .no-data{
+    margin: 0 auto;
+    padding-right: 75%;
+  }
   
   .no-data h1{
     text-align: center !important;
+
   }
   
