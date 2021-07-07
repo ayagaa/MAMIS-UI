@@ -145,11 +145,8 @@ export default class WeatherContainer extends Component {
     geoWeatherData = showDaily ? forecastData : currentData?.forecasts;
     let timeFormat = showDaily ? "dddd Do MMM" : "HH:mm";
     let conditionsArray = this.getConditionsText(showDaily, geoWeatherData[currentIndex]?.forecast[0]);
-<<<<<<< HEAD
+
     if (geoWeatherData && geoWeatherData.length > 0) {
-=======
-    if (geoWeatherData && geoWeatherData.length > 0 &&  geoWeatherData[currentIndex]?.forecast[0]) {
->>>>>>> 81017208c98e2371e5be13eefe519a59215f7d9f
       return (
         <div className="display-container">
           <div className="location-data">

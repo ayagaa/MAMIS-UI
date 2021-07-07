@@ -266,11 +266,7 @@ export default class FarmerView extends Component {
     if (searchResult?.currentData && searchResult?.forecasts) {
       weatherDetails = this.renderWeatherData(
         searchResult.currentData,
-<<<<<<< HEAD
         searchResult.forecasts?.forecasts  ,
-=======
-        searchResult.forecasts,
->>>>>>> 81017208c98e2371e5be13eefe519a59215f7d9f
         locationData
       );
     }
