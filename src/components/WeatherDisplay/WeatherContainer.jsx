@@ -142,10 +142,14 @@ export default class WeatherContainer extends Component {
     const { currentData, forecastData, locationData } = this.props;
     const { showDaily } = this.state;
 
-    geoWeatherData = showDaily ? forecastData : currentData.forecasts;
+    geoWeatherData = showDaily ? forecastData : currentData?.forecasts;
     let timeFormat = showDaily ? "dddd Do MMM" : "HH:mm";
     let conditionsArray = this.getConditionsText(showDaily, geoWeatherData[currentIndex]?.forecast[0]);
+<<<<<<< HEAD
     if (geoWeatherData && geoWeatherData.length > 0) {
+=======
+    if (geoWeatherData && geoWeatherData.length > 0 &&  geoWeatherData[currentIndex]?.forecast[0]) {
+>>>>>>> 81017208c98e2371e5be13eefe519a59215f7d9f
       return (
         <div className="display-container">
           <div className="location-data">
@@ -153,17 +157,17 @@ export default class WeatherContainer extends Component {
               <p>
                 {" "}
                 {"Location: "}
-                {locationData.location}
+                {locationData?.location}
               </p>
               <p>
                 {" "}
                 {"County: "}
-                {locationData.region1}
+                {locationData?.region1}
               </p>
               <p>
                 {" "}
                 {"Ward: "}
-                {locationData.region3}
+                {locationData?.region3}
               </p>
             </div>
           </div>
@@ -185,12 +189,12 @@ export default class WeatherContainer extends Component {
             <h3>
               {" "}
               {moment(
-                geoWeatherData[currentIndex].forecast[0].startTime
+                geoWeatherData[currentIndex]?.forecast[0]?.startTime
               ).format(timeFormat)}
               {!showDaily
                 ? "-" +
                   moment(
-                    geoWeatherData[currentIndex].forecast[0].endTime
+                    geoWeatherData[currentIndex]?.forecast[0]?.endTime
                   ).format(timeFormat)
                 : ""}{" "}
             </h3>
@@ -206,15 +210,15 @@ export default class WeatherContainer extends Component {
               <p>
                 Precipitation :{" "}
                 {Math.round(
-                  geoWeatherData[currentIndex].forecast[0].precipitation.amount,
+                  geoWeatherData[currentIndex]?.forecast[0]?.precipitation?.amount,
                   0
                 )}{" "}
-                {geoWeatherData[currentIndex].forecast[0].precipitation.units}
+                {geoWeatherData[currentIndex]?.forecast[0]?.precipitation?.units}
               </p>
               <p>
                 Chance :{" "}
                 {Math.round(
-                  geoWeatherData[currentIndex].forecast[0].precipitation.chance,
+                  geoWeatherData[currentIndex]?.forecast[0]?.precipitation?.chance,
                   0
                 )}{" "}
                 %
@@ -222,26 +226,26 @@ export default class WeatherContainer extends Component {
               <p>
                 Max Temp :{" "}
                 {Math.round(
-                  geoWeatherData[currentIndex].forecast[0].temperatures?.max,
+                  geoWeatherData[currentIndex]?.forecast[0]?.temperatures?.max,
                   0
                 )}{" "}
-                °{geoWeatherData[currentIndex].forecast[0].temperatures?.units}
+                °{geoWeatherData[currentIndex]?.forecast[0]?.temperatures?.units}
               </p>
               <p>
                 Min Temp :{" "}
                 {Math.round(
-                  geoWeatherData[currentIndex].forecast[0].temperatures?.min,
+                  geoWeatherData[currentIndex]?.forecast[0]?.temperatures?.min,
                   0
                 )}{" "}
-                °{geoWeatherData[currentIndex].forecast[0].temperatures?.units}
+                °{geoWeatherData[currentIndex]?.forecast[0]?.temperatures?.units}
               </p>
               <p>
                 Wind Speed :{" "}
                 {Math.round(
-                  geoWeatherData[currentIndex].forecast[0].wind?.max,
+                  geoWeatherData[currentIndex]?.forecast[0]?.wind?.max,
                   0
                 )}{" "}
-                {geoWeatherData[currentIndex].forecast[0].wind?.units}
+                {geoWeatherData[currentIndex]?.forecast[0]?.wind?.units}
               </p>
             </div>
           </div>
@@ -251,7 +255,7 @@ export default class WeatherContainer extends Component {
                 key={"Big-icon"}
                 iconIndex={"Big-icon"}
                 iconId={this.getConditionIconId(
-                  geoWeatherData[currentIndex].forecast[0].conditionsCode
+                  geoWeatherData[currentIndex]?.forecast[0]?.conditionsCode
                 )}
               />
             </div>
@@ -259,12 +263,12 @@ export default class WeatherContainer extends Component {
               <span>
                 {" "}
                 {Math.round(
-                  geoWeatherData[currentIndex].forecast[0].temperatures?.max,
+                  geoWeatherData[currentIndex]?.forecast[0]?.temperatures?.max,
                   0
                 )}
                 <sup>
                   °
-                  {geoWeatherData[currentIndex].forecast[0].temperatures?.units}
+                  {geoWeatherData[currentIndex]?.forecast[0]?.temperatures?.units}
                 </sup>
               </span>
             </div>
@@ -287,7 +291,7 @@ export default class WeatherContainer extends Component {
                       this.getConditionIconId(conditionCode)
                     }
                     showDaily={showDaily}
-                    weatherData={geoWeatherData[index].forecast[0]}
+                    weatherData={geoWeatherData[index]?.forecast[0]}
                     tileClicked={(index) => this.smallTileClicked(index)}
                   />
                 );
@@ -303,7 +307,7 @@ export default class WeatherContainer extends Component {
                 <div className="w-detail">
                   Cloud Cover :{" "}
                   {Math.round(
-                    geoWeatherData[currentIndex].forecast[0].sky?.cloudCover,
+                    geoWeatherData[currentIndex]?.forecast[0]?.sky?.cloudCover,
                     0
                   )}{" "}
                   %
@@ -311,7 +315,7 @@ export default class WeatherContainer extends Component {
                 <div className="w-detail">
                   Sunshine :{" "}
                   {Math.round(
-                    geoWeatherData[currentIndex].forecast[0].sky?.sunshine,
+                    geoWeatherData[currentIndex]?.forecast[0]?.sky?.sunshine,
                     0
                   )}{" "}
                   %
@@ -326,7 +330,7 @@ export default class WeatherContainer extends Component {
                 <div className="w-detail">
                   Max :{" "}
                   {Math.round(
-                    geoWeatherData[currentIndex].forecast[0].relativeHumidity
+                    geoWeatherData[currentIndex]?.forecast[0]?.relativeHumidity
                       ?.max,
                     0
                   )}{" "}
@@ -335,7 +339,7 @@ export default class WeatherContainer extends Component {
                 <div className="w-detail">
                   Min :{" "}
                   {Math.round(
-                    geoWeatherData[currentIndex].forecast[0].relativeHumidity
+                    geoWeatherData[currentIndex]?.forecast[0]?.relativeHumidity
                       ?.min,
                     0
                   )}{" "}
@@ -351,26 +355,26 @@ export default class WeatherContainer extends Component {
                 <div className="w-detail">
                   Amount :{" "}
                   {Math.round(
-                    geoWeatherData[currentIndex].forecast[0].solar?.amount,
+                    geoWeatherData[currentIndex]?.forecast[0]?.solar?.amount,
                     0
                   )}{" "}
-                  {geoWeatherData[currentIndex].solar?.units}
+                  {geoWeatherData[currentIndex]?.solar?.units}
                 </div>
                 <div className="w-detail">
                   Average :{" "}
                   {Math.round(
-                    geoWeatherData[currentIndex].forecast[0].solar?.average,
+                    geoWeatherData[currentIndex]?.forecast[0]?.solar?.average,
                     0
                   )}{" "}
-                  {geoWeatherData[currentIndex].forecast[0].solar?.units}
+                  {geoWeatherData[currentIndex]?.forecast[0]?.solar?.units}
                 </div>
                 <div className="w-detail">
                   Std Deviation :{" "}
                   {Math.round(
-                    geoWeatherData[currentIndex].forecast[0].solar?.stdDev,
+                    geoWeatherData[currentIndex]?.forecast[0]?.solar?.stdDev,
                     0
                   )}{" "}
-                  {geoWeatherData[currentIndex].forecast[0].solar?.units}
+                  {geoWeatherData[currentIndex]?.forecast[0]?.solar?.units}
                 </div>
               </div>
             </div>
@@ -382,10 +386,10 @@ export default class WeatherContainer extends Component {
                 <div className="w-detail">
                   Amount :{" "}
                   {Math.round(
-                    geoWeatherData[currentIndex].forecast[0].dewPoint?.amount,
+                    geoWeatherData[currentIndex]?.forecast[0]?.dewPoint?.amount,
                     0
                   )}{" "}
-                  °{geoWeatherData[currentIndex].forecast[0].dewPoint?.units}
+                  °{geoWeatherData[currentIndex]?.forecast[0]?.dewPoint?.units}
                 </div>
               </div>
             </div>
@@ -398,50 +402,50 @@ export default class WeatherContainer extends Component {
                   <div className="detail-amount">
                     Amount :{" "}
                     {Math.round(
-                      geoWeatherData[currentIndex].forecast[0].wind?.amount,
+                      geoWeatherData[currentIndex]?.forecast[0]?.wind?.amount,
                       0
                     )}{" "}
-                    {geoWeatherData[currentIndex].forecast[0].wind?.units}
+                    {geoWeatherData[currentIndex]?.forecast[0]?.wind?.units}
                   </div>
                   <div className="detail-daymax">
                     Day Max :{" "}
                     {Math.round(
-                      geoWeatherData[currentIndex].forecast[0].wind?.dayMax,
+                      geoWeatherData[currentIndex]?.forecast[0]?.wind?.dayMax,
                       0
                     )}{" "}
-                    {geoWeatherData[currentIndex].forecast[0].wind?.units}
+                    {geoWeatherData[currentIndex]?.forecast[0]?.wind?.units}
                   </div>
                   <div className="detail-mornmax">
                     Morn Max :{" "}
                     {Math.round(
-                      geoWeatherData[currentIndex].forecast[0].wind?.morningMax,
+                      geoWeatherData[currentIndex]?.forecast[0]?.wind?.morningMax,
                       0
                     )}{" "}
-                    {geoWeatherData[currentIndex].forecast[0].wind?.units}
+                    {geoWeatherData[currentIndex]?.forecast[0]?.wind?.units}
                   </div>
                   <div className="detail-average">
                     Average :{" "}
                     {Math.round(
-                      geoWeatherData[currentIndex].forecast[0].wind?.average,
+                      geoWeatherData[currentIndex]?.forecast[0]?.wind?.average,
                       0
                     )}{" "}
-                    {geoWeatherData[currentIndex].forecast[0].wind?.units}
+                    {geoWeatherData[currentIndex]?.forecast[0]?.wind?.units}
                   </div>
                   <div className="detail-max">
                     Max :{" "}
                     {Math.round(
-                      geoWeatherData[currentIndex].forecast[0].wind?.max,
+                      geoWeatherData[currentIndex]?.forecast[0]?.wind?.max,
                       0
                     )}{" "}
-                    {geoWeatherData[currentIndex].forecast[0].wind?.units}
+                    {geoWeatherData[currentIndex]?.forecast[0]?.wind?.units}
                   </div>
                   <div className="detail-min">
                     Min :{" "}
                     {Math.round(
-                      geoWeatherData[currentIndex].forecast[0].wind?.min,
+                      geoWeatherData[currentIndex]?.forecast[0]?.wind?.min,
                       0
                     )}{" "}
-                    {geoWeatherData[currentIndex].forecast[0].wind?.units}
+                    {geoWeatherData[currentIndex]?.forecast[0]?.wind?.units}
                   </div>
                 </div>
               </div>
@@ -451,7 +455,7 @@ export default class WeatherContainer extends Component {
                 <h5>Soil Temperature</h5>
               </div>
               <div className="w-details">
-                {geoWeatherData[currentIndex].forecast[0].soilTemperatures?.map(
+                {geoWeatherData[currentIndex]?.forecast[0]?.soilTemperatures?.map(
                   (soilTemp, index) => {
                     return (
                       <div className="soil-detail-container">
@@ -478,7 +482,7 @@ export default class WeatherContainer extends Component {
                 <h5>Soil Moisture</h5>
               </div>
               <div className="w-details">
-                {geoWeatherData[currentIndex].forecast[0].soilMoisture?.map(
+                {geoWeatherData[currentIndex]?.forecast[0]?.soilMoisture?.map(
                   (soilMoist, index) => {
                     return (
                       <div className="soil-detail-container">
