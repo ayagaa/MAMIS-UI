@@ -53,7 +53,6 @@ export default class AppMap extends Component {
   }
 
   getCoordinates(event) {
-    console.log(event);
     if (event && event.latlng) {
       //const { pointSelected } = this.props;
 

@@ -3,6 +3,7 @@ export const LOCATION_RESULTS_RECEIVED = 'LOCATION_RESULTS_RECEIVED';
 export const LOCATION_DATA_RECEIVED = 'LOCATION_DATA_RECEIVED';
 export const RESET_LOCATION = 'RESET_LOCATION';
 export const MAP_03_RECEIVED = 'MAP_RECEIVED';
+export const WEATHER_DATA_RECEIVED = 'WEATHER_DATA_RECEIVED';
 
 export function locationsReceived(locations) {
     return {
@@ -25,7 +26,12 @@ export function locationDataReceived(locationData) {
     };
 }
 
-
+export function weatherDataReceived(weatherData) {
+    return {
+        type: WEATHER_DATA_RECEIVED,
+        weatherData
+    };
+}
 
 export function locationsReset() {
     return {
