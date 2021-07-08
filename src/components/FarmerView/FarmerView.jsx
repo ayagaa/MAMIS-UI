@@ -86,6 +86,7 @@ export default class FarmerView extends Component {
     getWeatherData(latitude, longitude, locationDataDispatch).then((result) => {
       const [locationData, locationDataDispatch] = window.store.search;
       if (locationData) {
+        console.log(locationData);
         this.setState({
           searchResult: locationData.weatherData,
         });
@@ -102,6 +103,7 @@ export default class FarmerView extends Component {
         (result) => {
           const [locationData, locationDataDispatch] = window.store.search;
           if (locationData) {
+            console.log(locationData);
             this.setState({
               searchResult: locationData.weatherData,
             });
