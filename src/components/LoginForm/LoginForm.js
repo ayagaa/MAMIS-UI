@@ -88,11 +88,13 @@ function LoginForm(props) {
     authenticateUser(loginDetails, authDispatch)
     .then((response) => {
       const [authUser] = window.store.authUser;
-      if(authUser.authUser && authUser.authUser.user && authUser.authUser.user.userType){
-
-        if(authUser.authUser.user.userType === 1){
+      if(authUser.authUser && authUser.authUser.user){
+        if(authUser.authUser.user?.userType === 0){
+          console.log(authUser.authUser);
+          history.push("/admin-view");
+        }else if(authUser.authUser.user?.userType === 1){
           history.push("/farmer-view");
-        }else if(authUser.authUser.user.userType === 2){
+        }else if(authUser.authUser.user?.userType === 2){
           history.push("/buyer-view");
         }
       }else{
