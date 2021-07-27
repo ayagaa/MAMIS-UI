@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
 import Button from "@material-ui/core/Button";
@@ -10,9 +10,18 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Switch from '@material-ui/core/Switch';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import {authenticateUser} from "../../store/epic/userAuthEpic";
+
+import { authenticateUser } from "../../store/epic/userAuthEpic";
 import { getAdmins } from "../../store/epic/adminsEpic";
+
+
+import { googleTranslate } from "../../utils/googleTranslate";
+
+import "./LoginForm.css";
 
 
 import "../../styles/FormStyles.css";
@@ -21,6 +30,16 @@ const initialFormData = Object.freeze({
   userEmail: "",
   userPassword: "",
 });
+
+const initViewData = Object.freeze({
+  title:"Machakos Agricultural Market Information System",
+  loginFormTitle:  "Sign in",
+  loginButton: "Sign in",
+  signUpText: "Don't have ana account? Sign Up",
+  userId: "User ID",
+  password: "Password"
+});
+
 
 function Copyright() {
   return (
@@ -61,9 +80,107 @@ function LoginForm(props) {
   let location = useLocation();
   const classes = useStyles();
 
-  const [formData, updateFormData] = React.useState(initialFormData);
+  const [viewData, translateFormData] = useState(initViewData);
+  const [formData, updateFormData] = useState(initialFormData);
+  const [checked, setChecked] = useState(false);
 
   let { from } = location.state || { from: { pathname: "/" } };
+
+  const toggleChecked = () => {
+    setChecked((prev) => !prev);
+    if(!checked){
+      window.language = "sw";
+      let title = null;
+      let loginFormTitle = null;
+      let loginButton = null;
+      let signUpText = null;
+      let userIdLabel = null;
+      let passwordLabel = null;
+
+      let titlePromise = new Promise(() => googleTranslate.translate(viewData.title, "en", "sw", function(err, translation){
+        title = translation.translatedText;
+        translateFormData(({
+          title:title,
+          loginFormTitle:  loginFormTitle,
+          loginButton: loginButton,
+          signUpText: signUpText,
+          userId: userIdLabel,
+          password: passwordLabel
+        }));
+      }));
+
+      let loginFormTitlePromise = new Promise(() =>  googleTranslate.translate(viewData.loginFormTitle, "en", "sw", function(err, translation){
+        loginFormTitle = translation.translatedText;
+        translateFormData(({
+          title:title,
+          loginFormTitle:  loginFormTitle,
+          loginButton: loginButton,
+          signUpText: signUpText,
+          userId: userIdLabel,
+          password: passwordLabel
+        }));
+      }));
+
+      let loginButtonPromise = new Promise(() => googleTranslate.translate(viewData.loginButton, "en", "sw", function(err, translation){
+        loginButton = translation.translatedText;
+        translateFormData(({
+          title:title,
+          loginFormTitle:  loginFormTitle,
+          loginButton: loginButton,
+          signUpText: signUpText,
+          userId: userIdLabel,
+          password: passwordLabel
+        }));
+      }));
+
+      let signUpTextPromise = new Promise(() => googleTranslate.translate(viewData.signUpText, "en", "sw", function(err, translation){
+        signUpText = translation.translatedText;
+        translateFormData(({
+          title:title,
+          loginFormTitle:  loginFormTitle,
+          loginButton: loginButton,
+          signUpText: signUpText,
+          userId: userIdLabel,
+          password: passwordLabel
+        }));
+      }));
+
+      let userIdTextPromise = new Promise(() => googleTranslate.translate(viewData.userId, "en", "sw", function(err, translation){
+        userIdLabel = translation.translatedText;
+        translateFormData(({
+          title:title,
+          loginFormTitle:  loginFormTitle,
+          loginButton: loginButton,
+          signUpText: signUpText,
+          userId: userIdLabel,
+          password: passwordLabel
+        }));
+      }));
+
+      let passwordLabelPromise = new Promise(() => googleTranslate.translate(viewData.password, "en", "sw", function(err, translation){
+        passwordLabel = translation.translatedText;
+        translateFormData(({
+          title:title,
+          loginFormTitle:  loginFormTitle,
+          loginButton: loginButton,
+          signUpText: signUpText,
+          userId: userIdLabel,
+          password: passwordLabel
+        }));
+      }));
+
+    }else{
+      window.language = "en";
+      translateFormData(({
+        title:"Machakos Agricultural Market Information System",
+        loginFormTitle:  "Sign in",
+        loginButton: "Sign in",
+        signUpText: "Don't have ana account? Sign Up",
+        userId: "User ID",
+        password: "Password"
+      }));
+    }
+  };
 
   const handleChange = (e) => {
     updateFormData({
@@ -86,21 +203,21 @@ function LoginForm(props) {
       errorMessage: ''
     }
     authenticateUser(loginDetails, authDispatch)
-    .then((response) => {
-      const [authUser] = window.store.authUser;
-      if(authUser.authUser && authUser.authUser.user){
-        if(authUser.authUser.user?.userType === 0){
-          console.log(authUser.authUser);
-          history.push("/admin-view");
-        }else if(authUser.authUser.user?.userType === 1){
-          history.push("/farmer-view");
-        }else if(authUser.authUser.user?.userType === 2){
-          history.push("/buyer-view");
-        }
-      }else{
+      .then((response) => {
+        const [authUser] = window.store.authUser;
+        if (authUser.authUser && authUser.authUser.user) {
+          if (authUser.authUser.user?.userType === 0) {
+            console.log(authUser.authUser);
+            history.push("/admin-view");
+          } else if (authUser.authUser.user?.userType === 1) {
+            history.push("/farmer-view");
+          } else if (authUser.authUser.user?.userType === 2) {
+            history.push("/buyer-view");
+          }
+        } else {
 
-      }
-    });
+        }
+      });
   };
 
   const register = (e) => {
@@ -130,68 +247,78 @@ function LoginForm(props) {
     e.preventDefault();
     history.push("/application-form");
   };
-
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        {/* <div className="cdf-image"></div> */}
-        <Typography component="h1" variant="h7">
-          Machakos Agricultural Market Information System
-        </Typography>
-        <div className="login-container">
-          <Typography component="h1" variant="h5">
-            Sign in
-        </Typography>
-          <form className={classes.form} noValidate onSubmit={handleSubmit}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="userEmail"
-              label="User ID"
-              name="userEmail"
-              autoComplete="email"
-              autoFocus
-              onChange={handleChange}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="userPassword"
-              label="Password"
-              type="password"
-              id="userPassword"
-              autoComplete="current-password"
-              onChange={handleChange}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-          </Button>
-            <Grid container>
-              <Grid item>
-                <Link href="#" variant="body2" onClick={register}>
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
-        </div>
-
+    <div>
+      <div className="language-switch">
+        <FormGroup>
+          <FormControlLabel
+            control={<Switch checked={checked} onChange={toggleChecked} />}
+            label="Swahili"
+          />
+        </FormGroup>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          {/* <div className="cdf-image"></div> */}
+          <Typography component="h1" variant="h7">
+            {viewData.title}
+          </Typography>
+          <div className="login-container">
+            <Typography component="h1" variant="h5">
+              {viewData.loginFormTitle}
+            </Typography>
+            <form className={classes.form} noValidate onSubmit={handleSubmit}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="userEmail"
+                label={viewData.userId}
+                name="userEmail"
+                autoComplete="email"
+                autoFocus
+                onChange={handleChange}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="userPassword"
+                label={viewData.password}
+                type="password"
+                id="userPassword"
+                autoComplete="current-password"
+                onChange={handleChange}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                {viewData.loginButton}
+              </Button>
+              <Grid container>
+                <Grid item>
+                  <Link href="#" variant="body2" onClick={register}>
+                    {viewData.signUpText}
+                  </Link>
+                </Grid>
+              </Grid>
+            </form>
+          </div>
+
+        </div>
+        <Box mt={8}>
+          <Copyright />
+        </Box>
+      </Container>
+    </div>
+
   );
 }
 

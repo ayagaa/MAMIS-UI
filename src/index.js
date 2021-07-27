@@ -7,7 +7,17 @@ import BaseContainer from "../src/containers/BaseContainer";
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
+import {setConfig} from "react-google-translate";
+
+setConfig({
+  clientEmail: process.env.REACT_APP_GCP_CLIENT_EMAIL ?? '',
+  privateKey: process.env.REACT_APP_GCP_PRIVATE_KEY ?? '',
+  projectId: process.env.REACT_APP_GCP_PROJECT_ID ?? ''
+});
+
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+window.language = "en";
 
 const rootReducer = combineReducers({
 });
