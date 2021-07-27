@@ -7,12 +7,17 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Typography from "@material-ui/core/Typography";
 import { FormControl, FormHelperText, Button } from "@material-ui/core";
 
+import Switch from "@material-ui/core/Switch";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+
 import PersonalDetailsForm from "../PersonalDetailsForm/PersonalDetailsForm";
 import ContactDetailsForm from "../ContactDetailsForm/ContactDetailsForm";
 import BuyerDetails from "../BusinessDetails/BuyerDetails";
 import FarmerDetails from "../BusinessDetails/FarmerDetails";
 import CredentialsForm from "../CredentialsForm/CredentialsForm";
 import RegistrationResult from "../RegistrationResult/RegistrationResult";
+import { googleTranslate } from "../../utils/googleTranslate";
 
 import { getAdmins } from "../../store/epic/adminsEpic";
 import { getValueChains } from "../../store/epic/valueChainsEpic";
@@ -27,6 +32,64 @@ const styles = {
 
 let administrationList = "";
 let valueChainsList = "";
+const resetLabels = {
+  nationalId: "National ID",
+  firstName: "First Name",
+  givenName: "Given Name",
+  otherName: "Other Name",
+  gender: "Gender",
+  female: "Female",
+  male: "Male",
+  transGender: "Trans-gender",
+  userType: "User Type",
+  farmer: "Farmer",
+  trader: "Trader",
+  valueChain: "Value Chain",
+  variety: "Variety",
+  purchasePower: "Purchase Power",
+  productPreference: "Product preference",
+  preferenceInstruction:
+    " Please select the produce and the variety you prefer",
+  varietyPreferenceInstruction:
+    "Please select the produce and the variety you have on your farm(s).",
+  unitofMeasure: "Unit of Measure",
+  close: "Close",
+  addProduct: "Add Product",
+  selectMapInstructions: "Please select your location from the map.",
+  selectFarmInstruction:
+    "Please select from the map where your farms are located. Then you will be prompted to select what farming you practice in that location.",
+  phoneNumber: "Phone Number",
+  emailAddress: "Email Address",
+  county: "County",
+  subCounty: "Sub-county",
+  ward: "Ward",
+  passwordError: "Please ensure the passwords are the same",
+  newPassword: "New Password",
+  confirmPassword: "Confirm Password",
+  failureResult: `The registration was not successfull. Please check the
+  details you entered. There could be duplicate entries in
+  national ID. The error is:`,
+  successResult: `You have been successfully registered in the MIS service.
+  Please login with username and password you entered. Your
+  user name is:`,
+  stepPersonalDetails: "Personal Details",
+  stepContactDetails: "Contact Details",
+  stepBusinessDetails: "Business Details",
+  stepLoginDetails: "Login Details",
+  stepConfirmation: "Confirmation",
+  stepSignin: "Sign in",
+  stepContentPersonalDetails: "Enter your personal details",
+  stepContentContactDetails: "Enter your contact details",
+  stepContentBusinessDetails1: "Your Farm(s) Details",
+  stepContentBusinessDetails2: "Business details",
+  stepContentPassword: "Please enter a password for your new account",
+  stepContentConfirmation: "Confirmation",
+  errorCheckMessage:
+    "Please ensure that you have entered all the required fields",
+  mainFormTitle: "MAMIS Service Registration Form",
+  mainBackButton: "Back",
+  mainSaveButton: "Save and continue",
+};
 
 export class RegistrationForm extends Component {
   constructor(props) {
@@ -54,10 +117,156 @@ export class RegistrationForm extends Component {
       submitted: false,
       hasError: false,
       errorText: "",
+      checked: false,
+      labels: {
+        nationalId: "National ID",
+        firstName: "First Name",
+        givenName: "Given Name",
+        otherName: "Other Name",
+        gender: "Gender",
+        female: "Female",
+        male: "Male",
+        transGender: "Trans-gender",
+        userType: "User Type",
+        farmer: "Farmer",
+        trader: "Trader",
+        valueChain: "Value Chain",
+        variety: "Variety",
+        purchasePower: "Purchase Power",
+        productPreference: "Product preference",
+        preferenceInstruction:
+          " Please select the produce and the variety you prefer",
+        varietyPreferenceInstruction:
+          "Please select the produce and the variety you have on your farm(s).",
+        unitofMeasure: "Unit of Measure",
+        close: "Close",
+        addProduct: "Add Product",
+        selectMapInstructions: "Please select your location from the map.",
+        selectFarmInstruction:
+          "Please select from the map where your farms are located. Then you will be prompted to select what farming you practice in that location.",
+        phoneNumber: "Phone Number",
+        emailAddress: "Email Address",
+        county: "County",
+        subCounty: "Sub-county",
+        ward: "Ward",
+        passwordError: "Please ensure the passwords are the same",
+        newPassword: "New Password",
+        confirmPassword: "Confirm Password",
+        failureResult: `The registration was not successfull. Please check the
+        details you entered. There could be duplicate entries in
+        national ID. The error is:`,
+        successResult: `You have been successfully registered in the MIS service.
+        Please login with username and password you entered. Your
+        user name is:`,
+        stepPersonalDetails: "Personal Details",
+        stepContactDetails: "Contact Details",
+        stepBusinessDetails: "Business Details",
+        stepLoginDetails: "Login Details",
+        stepConfirmation: "Confirmation",
+        stepSignin: "Sign in",
+        stepContentPersonalDetails: "Enter your personal details",
+        stepContentContactDetails: "Enter your contact details",
+        stepContentBusinessDetails1: "Your Farm(s) Details",
+        stepContentBusinessDetails2: "Business details",
+        stepContentPassword: "Please enter a password for your new account",
+        stepContentConfirmation: "Confirmation",
+        errorCheckMessage:
+          "Please ensure that you have entered all the required fields",
+        mainFormTitle: "MAMIS Service Registration Form",
+        mainBackButton: "Back",
+        mainSaveButton: "Save and continue",
+      },
     };
   }
 
+  toggleChecked = () => {
+    const { labels, checked } = this.state;
+    let changeLabels = labels;
+    let tempLabels = labels;
+    if (checked && window.language === "en") {
+      window.language = "sw";
+      for (let key in changeLabels) {
+        let translation = this.getTranslation(
+          changeLabels[key],
+          "en",
+          window.language,
+          key,
+          changeLabels
+        );
+      }
+      this.setState({
+        checked: true,
+        labels: changeLabels,
+      });
+      this.setState({
+        checked: true,
+        labels: changeLabels,
+      });
+
+    } else if (checked && window.language === "sw") {
+
+      window.language = "en";
+      this.setState({
+        labels: tempLabels,
+        checked: false,
+      });
+      this.setState({
+        labels: tempLabels,
+        checked: false,
+      });
+    } else if (!checked && window.language === "en") {
+      window.language = "sw";
+
+      for (let key in changeLabels) {
+        let translation = this.getTranslation(
+          changeLabels[key],
+          "en",
+          window.language,
+          key,
+          changeLabels
+        );
+      }
+      this.setState({
+        checked: true,
+        labels: changeLabels,
+      });
+      this.setState({
+        checked: true,
+        labels: changeLabels,
+      });
+    } else if (checked && window.language !== "sw") {
+
+      window.language = "en";
+      this.setState({
+        labels: tempLabels,
+        checked: false,
+      });
+      this.setState({
+        labels: tempLabels,
+        checked: false,
+      });
+    }
+  };
+
+  getTranslation = (word, startLang, targetLang, key, labelsList) => {
+    let translationPromise = new Promise(() =>
+      googleTranslate.translate(
+        word,
+        startLang,
+        targetLang,
+        function (err, translation) {
+          let result = translation?.translatedText;
+          labelsList[key] = result;
+          return labelsList;
+        }
+      )
+    );
+  };
+
   componentDidMount() {
+    const { labels, checked } = this.state;
+    let changeLabels = labels;
+    let tempLabels = labels;
     const [admins, adminsDispatch] = window.store.admins;
     const [valueChains, valueChainsDispatch] = window.store.valueChains;
 
@@ -70,34 +279,52 @@ export class RegistrationForm extends Component {
       const [valueChains, valueChainsDispatch] = window.store.valueChains;
       valueChainsList = valueChains;
     });
+
+    if (window.language !== "en") {
+      for (let key in changeLabels) {
+        let translation = this.getTranslation(
+          changeLabels[key],
+          "en",
+          window.language,
+          key,
+          changeLabels
+        );
+      }
+      this.setState({
+        labels: changeLabels,
+        checked: true,
+      });
+    }
   }
 
   getSteps = () => {
+    const { labels } = this.state;
     return [
-      "Personal Details",
-      "Contact Details",
-      "Business Details",
-      "Login Details",
-      "Confirmation",
-      "Sign in",
+      labels.stepPersonalDetails,
+      labels.stepContactDetails,
+      labels.stepBusinessDetails,
+      labels.stepLoginDetails,
+      labels.stepConfirmation,
+      labels.stepSignin,
     ];
   };
 
   getStepContent = (step, userType) => {
+    const { labels } = this.state;
     switch (step) {
       case 1:
-        return "Enter your personal details";
+        return labels.stepContentPersonalDetails;
       case 2:
-        return "Enter your contact details";
+        return labels.stepContentContactDetails;
       case 3:
         if (userType === 1) {
-          return "Your Farm(s) Details";
+          return labels.stepContentBusinessDetails1;
         }
-        return "Business details";
+        return labels.stepContentBusinessDetails2;
       case 4:
-        return "Please enter a password for your new account";
+        return labels.stepContentPassword;
       case 5:
-        return "Confirmation";
+        return labels.stepContentConfirmation;
     }
   };
 
@@ -123,6 +350,7 @@ export class RegistrationForm extends Component {
       userName,
       password,
       submitted,
+      labels,
     } = this.state;
 
     let errorChecker = false;
@@ -182,6 +410,7 @@ export class RegistrationForm extends Component {
       userName,
       password,
       submitted,
+      labels,
     } = this.state;
 
     if (step < 5) {
@@ -196,8 +425,7 @@ export class RegistrationForm extends Component {
       } else {
         this.setState({
           hasError: errorChecker,
-          errorText:
-            "Please ensure that you have entered all the required fields",
+          errorText: labels.errorCheckMessage,
         });
       }
     } else {
@@ -224,6 +452,7 @@ export class RegistrationForm extends Component {
       userName: userName,
       password: password,
       submitted: submitted,
+      labels: labels,
     };
   };
 
@@ -364,8 +593,9 @@ export class RegistrationForm extends Component {
       submitted,
       hasError,
       errorText,
+      labels,
     } = this.state;
-    
+
     const applicationValues = {
       nationalId,
       firstName,
@@ -386,6 +616,7 @@ export class RegistrationForm extends Component {
       userName,
       password,
       submitted,
+      labels,
     };
 
     let stepLabel = this.getStepContent(step, userType);
@@ -397,14 +628,27 @@ export class RegistrationForm extends Component {
       userType
     );
 
+    const { checked } = this.state;
+
     return (
       <div>
         <div className="form-container">
           <div className="menu-bar">
             <div className="logo-container"></div>
             <div className="title-container">
+              <div className="language-switch">
+                <FormGroup>
+                  <FormControlLabel
+                    disabled={true}
+                    control={
+                      <Switch checked={checked} onChange={this.toggleChecked} />
+                    }
+                    label="Swahili"
+                  />
+                </FormGroup>
+              </div>
               <Typography component="h1" variant="h3">
-                MAMIS Service Registration Form
+                {labels.mainFormTitle}
               </Typography>
             </div>
           </div>
@@ -422,11 +666,11 @@ export class RegistrationForm extends Component {
             </div>
           </div>
           <div className="form-error">
-          <FormControl error={hasError}>
-            <FormHelperText hidden={!hasError} color="primary">
-              {errorText}
-            </FormHelperText>
-          </FormControl>
+            <FormControl error={hasError}>
+              <FormHelperText hidden={!hasError} color="primary">
+                {errorText}
+              </FormHelperText>
+            </FormControl>
           </div>
           <FormControl variant="outlined">
             <div className="form-body">{currentPage}</div>
@@ -440,7 +684,7 @@ export class RegistrationForm extends Component {
                 style={styles.backButton}
                 onClick={this.previousStep}
               >
-                Back
+                {labels.mainBackButton}
               </Button>
 
               <Button
@@ -450,7 +694,7 @@ export class RegistrationForm extends Component {
                 style={styles.button}
                 onClick={this.nextStep}
               >
-                Save and Continue
+                {labels.mainSaveButton}
               </Button>
             </div>
           </FormControl>

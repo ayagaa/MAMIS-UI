@@ -195,10 +195,10 @@ export default class BuyerDetails extends Component {
           <TableContainer component={Paper}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
-                <TableCell width={120}>Value Chain</TableCell>
-                <TableCell width={130}>Variety</TableCell>
-                <TableCell width={40}>UM</TableCell>
-                <TableCell width={20}>Purchase Power</TableCell>
+                <TableCell width={120}>{values.labels.valueChain}</TableCell>
+                <TableCell width={130}>{values.labels.variety}</TableCell>
+                <TableCell width={40}>{values.labels.unitofMeasure}</TableCell>
+                <TableCell width={20}>{values.labels.purchasePower}</TableCell>
                 <TableCell width={10}></TableCell>
               </TableHead>
               <TableBody>
@@ -233,10 +233,10 @@ export default class BuyerDetails extends Component {
         <TableContainer component={Paper}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
-              <TableCell width={120}>Value Chain</TableCell>
-              <TableCell width={130}>Variety</TableCell>
-              <TableCell width={40}>UM</TableCell>
-              <TableCell width={20}>Purchase Power</TableCell>
+              <TableCell width={120}>{values.labels.valueChain}</TableCell>
+              <TableCell width={130}>{values.labels.variety}</TableCell>
+              <TableCell width={40}>{values.labels.unitofMeasure}</TableCell>
+              <TableCell width={20}>{values.labels.purchasePower}</TableCell>
               <TableCell width={10}></TableCell>
             </TableHead>
             <TableBody></TableBody>
@@ -258,14 +258,14 @@ export default class BuyerDetails extends Component {
             onClose={this.handleClose}
             aria-labelledby="form-dialog-title"
           >
-            <DialogTitle id="form-dialog-title">Product preference</DialogTitle>
+            <DialogTitle id="form-dialog-title">{values.labels.productPreference}</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Please select the produce and the variety you prefer.
+              {values.labels.preferenceInstruction}
               </DialogContentText>
               <FormControl>
                 <InputLabel htmlFor="outlined-age-native-simple">
-                  Value Chain
+                {values.labels.valueChain}
                 </InputLabel>
                 <Select
                   id="valueChainSelect"
@@ -287,13 +287,13 @@ export default class BuyerDetails extends Component {
               <br />
               <FormControl>
                 <InputLabel htmlFor="outlined-age-native-simple">
-                  Variety
+                {values.labels.variety}
                 </InputLabel>
                 <Select
                   id="varietySelect"
                   disabled={values.submitted}
                   autoFocus={false}
-                  label="Variety"
+                  label={values.labels.varieties}
                   onChange={(event) => this.selectVariety(event)}
                 >
                   {varieties.map((variety, index) => {
@@ -309,13 +309,13 @@ export default class BuyerDetails extends Component {
               <br />
               <FormControl>
                 <InputLabel htmlFor="outlined-age-native-simple">
-                  Unit of Measure
+                {values.labels.unitofMeasure}
                 </InputLabel>
                 <Select
                   id="umSelect"
                   disabled={values.submitted}
                   autoFocus={false}
-                  label="Unit of Measure"
+                  label={values.labels.unitofMeasure}
                   onChange={(event) => this.selectUM(event)}
                 >
                   {ums.map((um, index) => {
@@ -332,7 +332,7 @@ export default class BuyerDetails extends Component {
               <TextField
                 id="purchasePowerInput"
                 disabled={values.submitted}
-                label="Purchase Power"
+                label={values.labels.purchasePower}
                 type="number"
                 onChange={(event) => this.selectPurchasePower(event)}
                 variant="outlined"
@@ -342,10 +342,10 @@ export default class BuyerDetails extends Component {
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="primary">
-                Close
+              {values.labels.close}
               </Button>
               <Button onClick={this.handleAdd} color="primary">
-                Add Product
+              {values.labels.addProduct}
               </Button>
             </DialogActions>
           </Dialog>
@@ -356,7 +356,7 @@ export default class BuyerDetails extends Component {
         <br />
         <div className="buyer-details-container">
           <div className="instructions">
-            <p>Please select your location from the map.</p>
+            <p>{values.labels.selectMapInstructions}</p>
           </div>
           <div className="table-container">{selectionTable}</div>
           <div className="buyer-map">

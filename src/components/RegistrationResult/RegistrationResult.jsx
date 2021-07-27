@@ -59,6 +59,7 @@ export default class RegistrationResult extends Component {
       const [userData, userDataDispatch] = window.store.userData;
 
       addFarmer(farmerData, userDataDispatch).then((result) => {
+        const {values} = this.props;
         const [userData, userDataDispatch] = window.store.userData;
         if (userData && userData.farmerData) {
           if (
@@ -71,9 +72,7 @@ export default class RegistrationResult extends Component {
               message: (
                 <div>
                   <p>
-                    The registration was not successfull. Please check the
-                    details you entered. There could be duplicate entries in
-                    national ID. The error is:
+                    {values.labels.failureResult}
                   </p>
                   <br />
                   <h2>{userData.farmerData.errorMessage}</h2>
@@ -87,9 +86,7 @@ export default class RegistrationResult extends Component {
               message: (
                 <div>
                   <p>
-                    You have been successfully registered in the MIS service.
-                    Please login with username and password you entered. Your
-                    user name is:
+                  {values.labels.successResult}
                   </p>
                   <br />
                   <h2>{userData.farmerData.userId}</h2>
@@ -147,9 +144,7 @@ export default class RegistrationResult extends Component {
               message: (
                 <div>
                   <p>
-                    The registration was not successfull. Please check the
-                    details you entered. There could be duplicate entries in
-                    national ID. The error is:
+                  {values.labels.failureResult}
                   </p>
                   <br />
                   <h2>{userData.buyerData.errorMessage}</h2>
@@ -163,9 +158,7 @@ export default class RegistrationResult extends Component {
               message: (
                 <div>
                   <p>
-                    You have been successfully registered in the MIS service.
-                    Please login with username and password you entered. Your
-                    user name is:
+                  {values.labels.successResult}
                   </p>
                   <br />
                   <h2>{userData.buyerData.userId}</h2>

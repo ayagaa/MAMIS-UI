@@ -159,8 +159,8 @@ export default class FarmerDetails extends Component {
           <TableContainer component={Paper}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
-                <TableCell width={150}>Value Chain</TableCell>
-                <TableCell width={150}>Variety</TableCell>
+                <TableCell width={150}>{values.labels.valueChain}</TableCell>
+                <TableCell width={150}>{values.labels.variety}</TableCell>
                 <TableCell width={10}></TableCell>
               </TableHead>
               <TableBody>
@@ -192,8 +192,8 @@ export default class FarmerDetails extends Component {
         <TableContainer component={Paper}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
-              <TableCell width={150}>Value Chain</TableCell>
-              <TableCell width={150}>Variety</TableCell>
+              <TableCell width={150}>{values.labels.valueChain}</TableCell>
+              <TableCell width={150}>{values.labels.variety}</TableCell>
               <TableCell width={10}></TableCell>
             </TableHead>
             <TableBody></TableBody>
@@ -215,20 +215,19 @@ export default class FarmerDetails extends Component {
             onClose={this.handleClose}
             aria-labelledby="form-dialog-title"
           >
-            <DialogTitle id="form-dialog-title">Product preference</DialogTitle>
+            <DialogTitle id="form-dialog-title">{values.labels.productPreference}</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Please select the produce and the variety you have on your
-                farm(s).
+              {values.labels.varietyPreferenceInstruction}
               </DialogContentText>
               <FormControl>
                 <InputLabel htmlFor="outlined-age-native-simple">
-                  Value Chain
+                {values.labels.valueChain}
                 </InputLabel>
                 <Select
                   disabled={values.submitted}
                   autoFocus={false}
-                  label="Value Chain"
+                  label={values.labels.valueChain}
                   onChange={(event) => this.selectValueChain(event)}
                 >
                   {valueChains?.valueChains?.map((valueChain, index) => {
@@ -244,12 +243,12 @@ export default class FarmerDetails extends Component {
               <br />
               <FormControl>
                 <InputLabel htmlFor="outlined-age-native-simple">
-                  Variety
+                {values.labels.variety}
                 </InputLabel>
                 <Select
                   disabled={values.submitted}
                   autoFocus={false}
-                  label="Variety"
+                  label={values.labels.variety}
                   onChange={(event) => this.selectVariety(event)}
                 >
                   {varieties.map((variety, index) => {
@@ -266,10 +265,10 @@ export default class FarmerDetails extends Component {
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="primary">
-                Close
+              {values.labels.close}
               </Button>
               <Button onClick={this.handleAdd} color="primary">
-                Add Product
+              {values.labels.addProduct}
               </Button>
             </DialogActions>
           </Dialog>

@@ -76,7 +76,7 @@ export default class ContactDetailsForm extends Component {
           <form>
             <TextField
               disabled={values.submitted}
-              label="Phone Number"
+              label={values.labels.phoneNumber}
               onChange={(event) => handleChange("contactNo", event)}
               defaultValue={values.contactNo}
               variant="outlined"
@@ -85,7 +85,7 @@ export default class ContactDetailsForm extends Component {
             <br />
             <TextField
               disabled={values.submitted}
-              label="Email Address"
+              label={values.labels.emailAddress}
               onChange={(event) => handleChange("emailAddress", event)}
               defaultValue={values.emailAddress}
               variant="outlined"
@@ -94,12 +94,12 @@ export default class ContactDetailsForm extends Component {
             <br />
             <FormControl>
               <InputLabel htmlFor="outlined-age-native-simple">
-                County
+              {values.labels.county}
               </InputLabel>
               <Select
                 disabled={values.submitted}
                 autoFocus={false}
-                label="County"
+                label={values.labels.county}
                 onChange={(event) => handleChange("countyId", event)}
                 inputProps={{
                   name: "countyId",
@@ -118,12 +118,12 @@ export default class ContactDetailsForm extends Component {
             <br />
             <FormControl>
               <InputLabel htmlFor="outlined-age-native-simple">
-                Sub-county
+              {values.labels.subCounty}
               </InputLabel>
               <Select
                 disabled={values.submitted}
                 autoFocus={false}
-                label="Sub-county"
+                label={values.labels.subCounty}
                 inputProps={{
                   name: "subCountyId",
                   id: "outlined-age-native-simple",
@@ -141,7 +141,7 @@ export default class ContactDetailsForm extends Component {
             <br />
             <FormControl>
               <InputLabel htmlFor="outlined-age-native-simple">
-                Ward
+              {values.labels.ward}
               </InputLabel>
               <Select
                 disabled={values.submitted}

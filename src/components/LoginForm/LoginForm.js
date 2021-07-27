@@ -37,7 +37,8 @@ const initViewData = Object.freeze({
   loginButton: "Sign in",
   signUpText: "Don't have ana account? Sign Up",
   userId: "User ID",
-  password: "Password"
+  password: "Password",
+  
 });
 
 
@@ -97,7 +98,7 @@ function LoginForm(props) {
       let userIdLabel = null;
       let passwordLabel = null;
 
-      let titlePromise = new Promise(() => googleTranslate.translate(viewData.title, "en", "sw", function(err, translation){
+      let titlePromise = new Promise(() => googleTranslate.translate(viewData.title, "en", window.language, function(err, translation){
         title = translation.translatedText;
         translateFormData(({
           title:title,
@@ -109,7 +110,7 @@ function LoginForm(props) {
         }));
       }));
 
-      let loginFormTitlePromise = new Promise(() =>  googleTranslate.translate(viewData.loginFormTitle, "en", "sw", function(err, translation){
+      let loginFormTitlePromise = new Promise(() =>  googleTranslate.translate(viewData.loginFormTitle, "en", window.language, function(err, translation){
         loginFormTitle = translation.translatedText;
         translateFormData(({
           title:title,
@@ -121,7 +122,7 @@ function LoginForm(props) {
         }));
       }));
 
-      let loginButtonPromise = new Promise(() => googleTranslate.translate(viewData.loginButton, "en", "sw", function(err, translation){
+      let loginButtonPromise = new Promise(() => googleTranslate.translate(viewData.loginButton, "en",window.language, function(err, translation){
         loginButton = translation.translatedText;
         translateFormData(({
           title:title,
@@ -133,7 +134,7 @@ function LoginForm(props) {
         }));
       }));
 
-      let signUpTextPromise = new Promise(() => googleTranslate.translate(viewData.signUpText, "en", "sw", function(err, translation){
+      let signUpTextPromise = new Promise(() => googleTranslate.translate(viewData.signUpText, "en",window.language, function(err, translation){
         signUpText = translation.translatedText;
         translateFormData(({
           title:title,
@@ -145,7 +146,7 @@ function LoginForm(props) {
         }));
       }));
 
-      let userIdTextPromise = new Promise(() => googleTranslate.translate(viewData.userId, "en", "sw", function(err, translation){
+      let userIdTextPromise = new Promise(() => googleTranslate.translate(viewData.userId, "en", window.language, function(err, translation){
         userIdLabel = translation.translatedText;
         translateFormData(({
           title:title,
@@ -157,7 +158,7 @@ function LoginForm(props) {
         }));
       }));
 
-      let passwordLabelPromise = new Promise(() => googleTranslate.translate(viewData.password, "en", "sw", function(err, translation){
+      let passwordLabelPromise = new Promise(() => googleTranslate.translate(viewData.password, "en", window.language, function(err, translation){
         passwordLabel = translation.translatedText;
         translateFormData(({
           title:title,

@@ -34,7 +34,7 @@ export default class PersonalDetailsForm extends Component {
           <form>
             <TextField
               disabled={values.submitted}
-              label="National ID"
+              label={values.labels.nationalId}
               type="number"
               onChange={(event) => handleChange("nationalId", event)}
               defaultValue={values.nationalId}
@@ -44,7 +44,7 @@ export default class PersonalDetailsForm extends Component {
             <br />
             <TextField
               disabled={values.submitted}
-              label="First Name"
+              label={values.labels.firstName}
               onChange={(event) => handleChange("firstName", event)}
               defaultValue={values.firstName}
               variant="outlined"
@@ -53,7 +53,7 @@ export default class PersonalDetailsForm extends Component {
             <br />
             <TextField
               disabled={values.submitted}
-              label="Given Name"
+              label={values.labels.givenName}
               onChange={(event) => handleChange("givenName", event)}
               defaultValue={values.givenName}
               variant="outlined"
@@ -62,7 +62,7 @@ export default class PersonalDetailsForm extends Component {
             <br />
             <TextField
               disabled={values.submitted}
-              label="Other Name"
+              label={values.labels.otherName}
               onChange={(event) => handleChange("otherName", event)}
               defaultValue={values.otherName}
               variant="outlined"
@@ -76,7 +76,7 @@ export default class PersonalDetailsForm extends Component {
               <Select
                 disabled={values.submitted}
                 autoFocus={false}
-                label="Gender"
+                label={values.labels.gender}
                 value={values.gender}
                 onChange={(event) => handleChange("gender", event)}
                 inputProps={{
@@ -84,21 +84,21 @@ export default class PersonalDetailsForm extends Component {
                   id: "outlined-age-native-simple",
                 }}
               >
-                <option value={"Female"}>Female</option>
-                <option value={"Male"}>Male</option>
-                <option value={"Trans-gender"}>Trans-gender</option>
+                <option value={"Female"}>{values.labels.female}</option>
+                <option value={"Male"}>{values.labels.male}</option>
+                <option value={"Trans-gender"}>{values.labels.transGender}</option>
               </Select>
             </FormControl>
             <br />
             <br />
             <FormControl>
               <InputLabel htmlFor="outlined-age-native-simple">
-                User Type
+              {values.labels.userType}
               </InputLabel>
               <Select
                 disabled={values.submitted}
                 autoFocus={false}
-                label="User Type"
+                label={values.labels.userType}
                 value={values.userType}
                 onChange={(event) => handleChange("userType", event)}
                 inputProps={{
@@ -106,8 +106,8 @@ export default class PersonalDetailsForm extends Component {
                   id: "outlined-age-native-simple",
                 }}
               >
-                <option value={1}>Farmer</option>
-                <option value={2}>Trader</option>
+                <option value={1}>{values.labels.farmer}</option>
+                <option value={2}>{values.labels.trader}</option>
               </Select>
             </FormControl>
           </form>

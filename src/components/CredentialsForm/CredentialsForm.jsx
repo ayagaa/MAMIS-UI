@@ -29,11 +29,12 @@ export default class CredentialsForm extends Component {
   }
 
   checkPassword(event) {
+    const { values } = this.props;
       const passwordInput = document.getElementById("userPassword");
       let samePasswordCheck = event.target.value !== passwordInput.value;
       this.setState({
         hasError: samePasswordCheck,
-        errorText: samePasswordCheck? "Please ensure the passwords are the same": "",
+        errorText: samePasswordCheck? values.labels.passwordError: "",
     });
   }
 
@@ -57,7 +58,7 @@ export default class CredentialsForm extends Component {
                 fullWidth
                 defaultValue={values.password}
                 name="userPassword"
-                label="New Password"
+                label={values.labels.newPassword}
                 type="password"
                 id="userPassword"
                 autoComplete="current-password"
@@ -74,7 +75,7 @@ export default class CredentialsForm extends Component {
                 fullWidth
                 defaultValue={values.password}
                 name="confirmPassword"
-                label="Confirm Password"
+                label={values.labels.confirmPassword}
                 type="password"
                 id="confirmPassword"
                 autoComplete="current-password"
