@@ -22,6 +22,7 @@ import MarketInformation from "../MarketInformation/MarketInformation";
 
 import { getAdmins } from "../../store/epic/adminsEpic";
 import { fetchFarmers } from "../../store/epic/userDataEpic";
+import { googleTranslate } from "../../utils/googleTranslate";
 
 import "./BuyerView.css";
 
@@ -39,28 +40,34 @@ export default class BuyerView extends Component {
       isInitiated: false,
       admins: null,
       farmersData: null,
-      wards: null
+      wards: null,
+      labels: {
+        mainTitle: "MIS Service Trader Page",
+        farmerListingTitle: "FARMER LISTING",
+        marketInfoTitle: "MARKET INFORMATION",
+        logoutLabel: "Logout"
+      }
     };
   }
 
+  getTranslation = (word, startLang, targetLang, key, labelsList) => {
+    let translationPromise = new Promise(() =>
+      googleTranslate.translate(
+        word,
+        startLang,
+        targetLang,
+        function (err, translation) {
+          let result = translation?.translatedText;
+          labelsList[key] = result;
+          return labelsList;
+        }
+      )
+    );
+  };
+
   componentDidMount() {
-    const { isInitiated} = this.state;
-
-    // const [userData, userDataDispatch] = window.store.userData;
-    // fetchFarmers().then((result) => {
-    //   const [userData, userDataDispatch] = window.store.userData;
-    //   console.log(userData);
-    // });
-
-    // const [admins, adminsDispatch] = window.store.admins
-    // getAdmins(adminsDispatch).then((result) => {
-    //   const [admins, adminsDispatch] = window.store.admins;
-    //   let administrationList = admins;
-    //   this.setState({
-    //     admins: administrationList.admins
-    //   })
-    // });
-
+    const { isInitiated, labels} = this.state;
+    let changeLabels = labels;
     if (window.store.authUser[0].authUser && !isInitiated) {
       this.setState({
         user: window.store.authUser[0].authUser.user,
@@ -73,6 +80,27 @@ export default class BuyerView extends Component {
         wards: window.store.authUser[0].authUser.wards,
         // searchResult: window.store.authUser[0].authUser.searchResult,
         isInitiated: true,
+      });
+    }
+
+    if (window.language !== "en") {
+      for (let key in changeLabels) {
+        let translation = this.getTranslation(
+          changeLabels[key],
+          "en",
+          window.language,
+          key,
+          changeLabels
+        );
+      }
+      this.setState({
+        labels: changeLabels,
+        checked: true,
+      });
+      console.log(changeLabels);
+      this.setState({
+        labels: changeLabels,
+        checked: true,
       });
     }
 
@@ -122,11 +150,12 @@ export default class BuyerView extends Component {
   }
 
   handleChange = (event) => {
-    if (event.target.innerText === "FARMER LISTING") {
+    const {labels} = this.state;
+    if (event.target.innerText.toLowerCase() === labels.farmerListingTitle.toLowerCase()) {
       this.setState({
         value: 1,
       });
-    } else if (event.target.innerText === "MARKET INFORMATION") {
+    } else if (event.target.innerText.toLowerCase() === labels.marketInfoTitle.toLowerCase()) {
       this.setState({
         value: 0,
       });
@@ -139,13 +168,13 @@ export default class BuyerView extends Component {
   }
 
   render() {
-    const { value} = this.state;
+    const { value, labels} = this.state;
     const currentTab = this.renderTabContent(value);
     return (
       <div>
       <AppBar position="static" color="transparent">
         <Typography component="h1" variant="h3">
-          MIS Service Trader Page
+          {labels.mainTitle}
         </Typography>
         <Paper square>
           <Tabs
@@ -156,15 +185,15 @@ export default class BuyerView extends Component {
             textColor="primary"
             aria-label="icon label tabs example"
           >
-            <Tab id={0} label="Market Information" />
-            <Tab id={1} label="Farmer Listing" />
+            <Tab id={0} label={labels.marketInfoTitle} />
+            <Tab id={1} label={labels.farmerListingTitle} />
           </Tabs>
         </Paper>
         <div className="logout-button">
           <IconButton color="primary" aria-label="Logout" size="large" onClick={this.logout}>
             <PowerSettingsNewIcon/>
           </IconButton>
-          <a href=""onClick={this.logout}>Logout</a>
+          <a href=""onClick={this.logout}>{labels.logoutLabel}</a>
         </div>
       </AppBar>
       {currentTab}

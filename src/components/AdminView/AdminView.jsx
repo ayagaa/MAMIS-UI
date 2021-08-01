@@ -14,6 +14,9 @@ import FarmerList from "../FarmerList/FarmerList";
 import BuyerList from "../BuyerList/BuyerList";
 import MarketInformation from "../MarketInformation/MarketInformation";
 
+import {deleteUser} from "../../store/epic/userDataEpic";
+import { authenticateUser } from "../../store/epic/userAuthEpic";
+
 import "./AdminView.css";
 
 export default class AdminView extends Component {
@@ -29,6 +32,7 @@ export default class AdminView extends Component {
       users: [],
       wards: [],
       admins: [],
+      user: null,
     };
   }
 
@@ -43,9 +47,42 @@ export default class AdminView extends Component {
         users: window.store?.authUser[0]?.authUser?.users,
         wards: window.store?.authUser[0]?.authUser?.wards,
         admins: window.store?.authUser[0]?.authUser?.admins,
+        user: window.store?.authUser[0]?.authUser?.user,
       });
     } else {
     }
+  }
+
+  deleteSelectedUser = (selectedUser) => {
+    const {user} = this.state;
+    console.log(user);
+    console.log(selectedUser);
+
+    const [userData, userDataDispatch] = window.store.userData;
+    deleteUser(selectedUser, userDataDispatch)
+    .then((respose) => {
+      console.log("user deleted");
+    });
+
+    const [authUser, authDispatch] = window.store.authUser;
+    authenticateUser(user, authDispatch)
+      .then((response) => {
+        const [authUser] = window.store.authUser;
+        if (authUser.authUser && authUser.authUser.user) {
+          console.log(authUser.authUser.users);
+          this.setState({
+            buyers: window.store?.authUser.buyers,
+            farmers: window.store?.authUser.farmers,
+            marketPrices: window.store?.authUser.marketPrices,
+            markets: window.store?.authUser.markets,
+            valueChains: window.store?.authUser.valueChains,
+            users: window.store?.authUser.users,
+            wards: window.store?.authUser.wards,
+            admins: window.store?.authUser.admins,
+            user: window.store?.authUser.user,
+          });
+        }
+      });
   }
 
   handleChange = (event) => {
@@ -92,6 +129,7 @@ export default class AdminView extends Component {
               farmers={farmers}
               users={users}
               wards={wards}
+              deleteSelectedUser={this.deleteSelectedUser}
             />
           </div>
         );

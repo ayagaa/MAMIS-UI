@@ -15,17 +15,18 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import SearchIcon from "@material-ui/icons/Search";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 
 import AppMap from "../Map/AppMap";
 import WeatherContainer from "../WeatherDisplay/WeatherContainer";
 import MarketInformation from "../MarketInformation/MarketInformation";
+import FacilitiesView from "../FacilitiesView/FacilitiesView";
 
 import { authenticateUser } from "../../store/epic/userAuthEpic";
 import { getAdmins } from "../../store/epic/adminsEpic";
 import { getWeatherData } from "../../store/epic/locationSearchEpic";
+import { googleTranslate } from "../../utils/googleTranslate";
 
 import "./FarmerView.css";
 
@@ -49,12 +50,34 @@ export default class FarmerView extends Component {
       isInitiated: false,
       rerenderMap: true,
       admins: null,
+      labels: {
+      weatherInfoTitle: "WEATHER INFORMATION",
+      marketInfoTitle: "MARKET INFORMATION",
+      facilitiesTitle: "CROP INSURANCE & CREDIT FACILITIES",
+      logoutTitle: "Logout",
+      pageTitle: "MAMIS Service Farmer Page"
+      }
     };
   }
 
-  componentDidMount() {
-    const { isInitiated, mapData } = this.state;
+  getTranslation = (word, startLang, targetLang, key, labelsList) => {
+    let translationPromise = new Promise(() =>
+      googleTranslate.translate(
+        word,
+        startLang,
+        targetLang,
+        function (err, translation) {
+          let result = translation?.translatedText;
+          labelsList[key] = result;
+          return labelsList;
+        }
+      )
+    );
+  };
 
+  componentDidMount() {
+    const { isInitiated, mapData, labels } = this.state;
+    let changeLabels = labels;
     const [admins, adminsDispatch] = window.store.admins;
     getAdmins(adminsDispatch).then((result) => {
       const [admins, adminsDispatch] = window.store.admins;
@@ -75,6 +98,22 @@ export default class FarmerView extends Component {
         wards: window.store.authUser[0].authUser.wards,
         searchResult: window.store.authUser[0].authUser.searchResult,
         isInitiated: true,
+      });
+    }
+
+    if (window.language !== "en") {
+      for (let key in changeLabels) {
+        let translation = this.getTranslation(
+          changeLabels[key],
+          "en",
+          window.language,
+          key,
+          changeLabels
+        );
+      }
+      this.setState({
+        labels: changeLabels,
+        checked: true,
       });
     }
   }
@@ -244,26 +283,28 @@ export default class FarmerView extends Component {
   };
 
   handleChange = (event) => {
-    if (event.target.innerText === "WEATHER INFORMATION") {
+    const {labels} = this.state;
+    if (event.target.innerText === labels.weatherInfoTitle) {
       this.setState({
         value: 0,
       });
-    } else if (event.target.innerText === "MARKET INFORMATION") {
+    } else if (event.target.innerText === labels.marketInfoTitle) {
       this.setState({
         value: 1,
         rerenderMap: false,
       });
-    } else if (event.target.innerText === "CREDIT FACILITIES") {
+    } else if (event.target.innerText === labels.facilitiesTitle) {
       this.setState({
         value: 2,
         rerenderMap: false,
       });
-    } else if (event.target.innerText === "CROP INSURANCE") {
-      this.setState({
-        value: 3,
-        rerenderMap: false,
-      });
-    }
+    } 
+    // else if (event.target.innerText === "CROP INSURANCE") {
+    //   this.setState({
+    //     value: 3,
+    //     rerenderMap: false,
+    //   });
+    // }
   };
 
   renderTabContent(value) {
@@ -320,7 +361,7 @@ export default class FarmerView extends Component {
       case 2:
         return (
           <div>
-            <h1>Three</h1>
+            <FacilitiesView/>
           </div>
         );
       case 3:
@@ -344,13 +385,13 @@ export default class FarmerView extends Component {
   };
 
   render() {
-    const { value, marketPrices, user } = this.state;
+    const { value, marketPrices, user, labels } = this.state;
     const currentTab = this.renderTabContent(value);
     return (
       <div>
         <AppBar position="static" color="transparent">
           <Typography component="h1" variant="h3">
-            MAMIS Service Farmer Page
+            {labels.pageTitle}
           </Typography>
           <br />
           <br />
@@ -364,10 +405,10 @@ export default class FarmerView extends Component {
               textColor="primary"
               aria-label="icon label tabs example"
             >
-              <Tab id={0} label="Weather Information" />
-              <Tab id={1} label="Market Information" />
-              <Tab id={2} label="Credit Facilities" />
-              <Tab id={3} label="Crop Insurance" />
+              <Tab id={0} label={labels.weatherInfoTitle} />
+              <Tab id={1} label={labels.marketInfoTitle} />
+              <Tab id={2} label={labels.facilitiesTitle} />
+              {/* <Tab id={3} label="Crop Insurance" /> */}
             </Tabs>
           </Paper>
           <div className="logout-button">
@@ -380,7 +421,7 @@ export default class FarmerView extends Component {
               <PowerSettingsNewIcon />
             </IconButton>
             <a href="" onClick={this.logout}>
-              Logout
+              {labels.logoutTitle}
             </a>
           </div>
         </AppBar>

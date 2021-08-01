@@ -77,7 +77,7 @@ export default class FarmerList extends Component {
                 <TableCell width={180}>Ward</TableCell>
                 <TableCell width={70}>User Id</TableCell>
                 <TableCell width={180}>Varieties</TableCell>
-                <TableCell width={20}></TableCell>
+                {/* <TableCell width={20}></TableCell> */}
               </TableHead>
               <TableBody>
                 {farmerData?.map((row, index) => (
@@ -88,7 +88,7 @@ export default class FarmerList extends Component {
                     <TableCell>{row.ward}</TableCell>
                     <TableCell>{row.userId}</TableCell>
                     <TableCell>{row.farmerBvs}</TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                       <IconButton
                         aria-label="delete"
                         color="primary"
@@ -96,7 +96,7 @@ export default class FarmerList extends Component {
                       >
                         <DeleteIcon />
                       </IconButton>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>

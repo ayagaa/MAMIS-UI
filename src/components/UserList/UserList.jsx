@@ -16,23 +16,22 @@ let userData = [];
 
 export default class UserList extends Component {
   deleteUser(event, index) {
-      let user = userData[index];
-      console.log(user);
+    const { deleteSelectedUser } = this.props;
+    let user = userData[index];
+    deleteSelectedUser(user);
   }
 
-  componentDidMount(){
-
-  }
+  componentDidMount() {}
 
   render() {
     const { users, farmers, buyers, wards } = this.props;
-   
+
     let userFound = false;
     userData = [];
 
-    for (let i = 0; i < users.length; i++) {
+    for (let i = 0; i < users?.length; i++) {
       userFound = false;
-      for (let j = 0; j < farmers.length; j++) {
+      for (let j = 0; j < farmers?.length; j++) {
         if (users[i]?.userId === farmers[j]?.userId) {
           userData.push({
             userNo: users[i].userNo,
@@ -54,7 +53,7 @@ export default class UserList extends Component {
         }
       }
       if (!userFound) {
-        for (let k = 0; k < buyers.length; k++) {
+        for (let k = 0; k < buyers?.length; k++) {
           if (users[i]?.userId === buyers[k]?.userId) {
             userData.push({
               userNo: users[i].userNo,

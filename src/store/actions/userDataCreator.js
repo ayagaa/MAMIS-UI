@@ -8,6 +8,8 @@ export const UPDATE_BUYER = 'UPDATE_BUYER';
 
 export const FARMERS_FETCHED = 'FARMERS_FETCHED';
 
+export const USER_DELETED = 'USER_DELETED';
+
 export function farmersFetched(farmers){
     return {
         type: FARMERS_FETCHED,
@@ -26,6 +28,13 @@ export function buyerAdded(buyer) {
     return {
         type: ADD_BUYER,
         buyer
+    };
+}
+
+export function userDeleted(user) {
+    return {
+        type: USER_DELETED,
+        user
     };
 }
 

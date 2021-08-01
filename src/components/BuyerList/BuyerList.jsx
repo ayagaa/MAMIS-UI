@@ -80,7 +80,7 @@ export default class BuyerList extends Component {
                     <TableCell width={50}>Contacts</TableCell>
                     <TableCell width={180}>Ward</TableCell>
                     <TableCell width={180}>Varieties</TableCell>
-                    <TableCell width={20}></TableCell>
+                    {/* <TableCell width={20}></TableCell> */}
                   </TableHead>
                   <TableBody>
                     {buyerData?.map((row, index) => (
@@ -111,7 +111,7 @@ export default class BuyerList extends Component {
                     <TableCell width={180}>Ward</TableCell>
                     <TableCell width={70}>User Id</TableCell>
                     <TableCell width={180}>Varieties</TableCell>
-                    <TableCell width={20}></TableCell>
+                    {/* <TableCell width={20}></TableCell> */}
                   </TableHead>
                   <TableBody>
                     {buyerData?.map((row, index) => (
@@ -122,7 +122,7 @@ export default class BuyerList extends Component {
                         <TableCell>{row.ward}</TableCell>
                         <TableCell>{row.userId}</TableCell>
                         <TableCell>{row.buyerBvs}</TableCell>
-                        <TableCell>
+                        {/* <TableCell>
                           <IconButton
                             aria-label="delete"
                             color="primary"
@@ -130,7 +130,7 @@ export default class BuyerList extends Component {
                           >
                             <DeleteIcon />
                           </IconButton>
-                        </TableCell>
+                        </TableCell> */}
                       </TableRow>
                     ))}
                   </TableBody>
